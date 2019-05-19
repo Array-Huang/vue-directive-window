@@ -42,6 +42,10 @@ function _regexMatchTransform(transformCssText) {
 }
 
 function _handleStartEvent(event) {
+  /* 只有拖拽本体才会挪动，拖拽子元素是不会挪动的 */
+  if (event.target !== event.currentTarget) {
+    return;
+  }
   const el = event.currentTarget; // event.currentTarget是绑定事件的element
   el.dataset.startPoint = JSON.stringify(_getClientPosition(event)); // 记录本次拖拽的起点位置
   el.addEventListener(moveEvent, _handleMoveEvent, false); // 应在拖拽开始后才绑定移动的事件回调
@@ -70,6 +74,11 @@ function _handleMoveEvent(event) {
 }
 
 function _handleEndEvent(event) {
+  /* 只有拖拽本体才会挪动，拖拽子元素是不会挪动的 */
+  if (event.target !== event.currentTarget) {
+    return;
+  }
+
   const el = event.currentTarget; // event.currentTarget是绑定事件的element
   delete el.dataset.startPoint; // 清除临时值
   /* 记录transform:translate的值，便于下次拖拽使用 */
