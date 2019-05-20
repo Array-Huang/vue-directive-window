@@ -41,14 +41,21 @@ function _regexMatchTransform(transformCssText) {
   return translate;
 }
 
-function _handleStartEvent(event) {
+function _handleStartEventForResize(event) {
+  /* 只有拖拽本体才有效，拖拽子元素是无效的 */
+  if (event.target !== event.currentTarget) {
+    return;
+  }
+}
+
+function _handleStartEventForMove(event) {
   /* 只有拖拽本体才会挪动，拖拽子元素是不会挪动的 */
   if (event.target !== event.currentTarget) {
     return;
   }
   const el = event.currentTarget; // event.currentTarget是绑定事件的element
   el.dataset.startPoint = JSON.stringify(_getClientPosition(event)); // 记录本次拖拽的起点位置
-  el.addEventListener(moveEvent, _handleMoveEvent, false); // 应在拖拽开始后才绑定移动的事件回调
+  el.addEventListener(moveEvent, _handleMoveEventForMove, false); // 应在拖拽开始后才绑定移动的事件回调
 
   /* 如果是第一次进行拖拽，则进行初始化：根据transform */
   if (!el.dataset.translate) {
@@ -56,10 +63,13 @@ function _handleStartEvent(event) {
     el.dataset.translate = JSON.stringify(translate); // 把transform: translate的值存储在dataset里
   }
 
+  /* 调整cursor */
+  el.style.cursor = 'all-scroll';
+
   event.preventDefault();
 }
 
-function _handleMoveEvent(event) {
+function _handleMoveEventForMove(event) {
   const el = event.currentTarget; // event.currentTarget是绑定事件的element
   const position = _getClientPosition(event); // 获取鼠标/手指的位置
   const startPoint = JSON.parse(el.dataset.startPoint);
@@ -73,7 +83,7 @@ function _handleMoveEvent(event) {
   el.style.transform = `translate(${translate.x}px, ${translate.y}px)`;
 }
 
-function _handleEndEvent(event) {
+function _handleEndEventForMove(event) {
   /* 只有拖拽本体才会挪动，拖拽子元素是不会挪动的 */
   if (event.target !== event.currentTarget) {
     return;
@@ -85,7 +95,10 @@ function _handleEndEvent(event) {
   el.dataset.translate = JSON.stringify(
     _regexMatchTransform(el.style.transform)
   );
-  el.removeEventListener(moveEvent, _handleMoveEvent, false); // 拖拽结束，清除移动的事件回调
+  el.removeEventListener(moveEvent, _handleMoveEventForMove, false); // 拖拽结束，清除移动的事件回调
+
+  /* 恢复cursor */
+  el.style.cursor = 'auto';
 
   event.preventDefault();
 }
@@ -94,7 +107,9 @@ Vue.directive('window', {
   startPoint: {},
   bind(el) {
     /* 拖拽移动相关 */
-    el.addEventListener(startEvent, _handleStartEvent);
-    el.addEventListener(endEvent, _handleEndEvent);
+    el.addEventListener(startEvent, _handleStartEventForMove);
+    el.addEventListener(endEvent, _handleEndEventForMove);
+    /* 拖拽调整大小相关 */
+    el.addEventListener('mousedown', _handleStartEventForResize);
   },
 });
