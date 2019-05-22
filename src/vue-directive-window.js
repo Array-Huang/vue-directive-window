@@ -43,55 +43,51 @@ function _regexMatchTransform(transformCssText) {
 
   return translate;
 }
+/**
+ * 为了拖拽调整大小，绑定事件；
+ * 与拖拽移动不一样的是，由于鼠标在移动过程中会超出window的范围，因此moveEvent需要绑定在document上
+ *
+ * @param {Event} event
+ * @returns
+ */
+function _handleStartEventForResize(startEvent) {
+  function _handleMoveEventForResize(moveEvent) {
+    const position = _getClientPosition(moveEvent); // 获取鼠标/手指的位置
+    const windowWidth = position.x - standard.x;
+    const windowHeight = position.y - standard.y;
 
-function _handleStartEventForResize(event) {
+    window.style.width = windowWidth > 0 ? windowWidth + 'px' : 0;
+    window.style.height = windowHeight > 0 ? windowHeight + 'px' : 0;
+    moveEvent.stopPropagation();
+  }
+
+  function _handleEndEventForResize(endEvent) {
+    /* 只有拖拽本体才有效 */
+    if (endEvent.target !== endEvent.currentTarget) {
+      return;
+    }
+    document.removeEventListener(moveEvent, _handleMoveEventForResize, false); // 拖拽结束，清除移动的事件回调
+
+    endEvent.preventDefault();
+    endEvent.stopPropagation();
+  }
+
   /* 只有拖拽本体才有效，拖拽子元素是无效的 */
-  if (event.target !== event.currentTarget) {
+  if (startEvent.target !== startEvent.currentTarget) {
     return;
   }
-  const el = event.currentTarget; // event.currentTarget是绑定事件的element
-  const startPoint = _getClientPosition(event); // 本次拖拽的起点位置
-  const window = el.parentElement;
-  el.dataset.standard = JSON.stringify({
-    x: startPoint.x - window.offsetWidth,
-    y: startPoint.y - window.offsetHeight,
-  });
-  console.log(el.dataset.standard);
-  el.addEventListener(moveEvent, _handleMoveEventForResize, false); // 应在拖拽开始后才绑定移动的事件回调
-  event.preventDefault();
-  event.stopPropagation();
-}
+  const el = startEvent.currentTarget; // startEvent.currentTarget是绑定事件的element，这里指的其实是handler
+  const startPoint = _getClientPosition(startEvent); // 本次拖拽的起点位置
+  const window = el.parentElement; // handler的父节点，即为window
+  const standard = {
+    x: startPoint.x - window.offsetWidth, // 可以“近似”认为是window的offsetLeft
+    y: startPoint.y - window.offsetHeight, // 可以“近似”认为是window的offsetTop
+  };
 
-function _handleMoveEventForResize(event) {
-  const el = event.currentTarget; // event.currentTarget是绑定事件的element
-  const position = _getClientPosition(event); // 获取鼠标/手指的位置
-  const standard = JSON.parse(el.dataset.standard);
-  // const resize = {
-  //   x: position.x - standard.x,
-  //   y: position.y - standard.y,
-  // };
-  // console.log(resize);
-  const window = el.parentElement;
-  const windowWidth = position.x - standard.x;
-  const windowHeight = position.y - standard.y;
-  console.log(standard, position);
-  window.style.width = windowWidth > 0 ? windowWidth + 'px' : 0;
-  window.style.height = windowHeight > 0 ? windowHeight + 'px' : 0;
-  event.stopPropagation();
-}
-
-function _handleEndEventForResize(event) {
-  /* 只有拖拽本体才有效 */
-  if (event.target !== event.currentTarget) {
-    return;
-  }
-
-  const el = event.currentTarget; // event.currentTarget是绑定事件的element
-  delete el.dataset.startPoint; // 清除临时值
-  el.removeEventListener(moveEvent, _handleMoveEventForResize, false); // 拖拽结束，清除移动的事件回调
-
-  event.preventDefault();
-  event.stopPropagation();
+  document.addEventListener(moveEvent, _handleMoveEventForResize, false); // 应在拖拽开始后才绑定移动的事件回调
+  el.addEventListener(endEvent, _handleEndEventForResize); // 绑定endEvent
+  startEvent.preventDefault();
+  startEvent.stopPropagation();
 }
 
 function _handleStartEventForMove(event) {
@@ -155,8 +151,8 @@ function _addResizeHandler(el) {
   handler.style.position = 'absolute';
   handler.style.right = 0;
   handler.style.bottom = 0;
-  handler.style.width = '5px';
-  handler.style.height = '5px';
+  handler.style.width = '10px';
+  handler.style.height = '10px';
   handler.style.cursor = 'nw-resize';
   handler.style.backgroundColor = '#666';
   el.appendChild(handler);
@@ -176,10 +172,6 @@ Vue.directive('window', {
     el.querySelector('.' + RESIZE_HANDLER_CLASSNAME).addEventListener(
       startEvent,
       _handleStartEventForResize
-    );
-    el.querySelector('.' + RESIZE_HANDLER_CLASSNAME).addEventListener(
-      endEvent,
-      _handleEndEventForResize
     );
   },
 });
