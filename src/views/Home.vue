@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <div class="box" v-window>
+    <div class="box" v-window="params">
       <div class="content1"></div>
       <div class="content2"></div>
     </div>
@@ -10,12 +10,22 @@
 <script>
 export default {
   name: 'home',
+  data() {
+    return {
+      params: {
+        minWidth: 10,
+        maxWidth: 400,
+        minHeight: 100,
+        maxHeight: 400,
+      },
+    };
+  },
 };
 </script>
 <style lang="stylus" scoped>
 .home {
   .box {
-    width: 640px;
+    width: 320px;
     height: 320px;
     background-color: red;
   }

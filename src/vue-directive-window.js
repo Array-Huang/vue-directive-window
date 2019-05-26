@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { validate } from './validate';
 
 /* 判断当前应该采用mouse相关事件还是touch相关事件 */
 const isTouchEvent = 'ontouchstart' in window;
@@ -53,19 +54,35 @@ function _regexMatchTransform(transformCssText) {
 function _handleStartEventForResize(startEvent) {
   function _handleMoveEventForResize(moveEvent) {
     const position = _getClientPosition(moveEvent); // 获取鼠标/手指的位置
-    const windowWidth = position.x - standard.x;
-    const windowHeight = position.y - standard.y;
+    let windowWidth = position.x - standard.x;
+    let windowHeight = position.y - standard.y;
+    /* 最小宽度限制 */
+    if (!!minWidth && windowWidth < minWidth) {
+      windowWidth = minWidth;
+    } else if (windowWidth < 0) {
+      windowWidth = 0;
+    }
+    /* 最大宽度限制 */
+    if (!!maxWidth && windowWidth > maxWidth) {
+      windowWidth = maxWidth;
+    }
+    /* 最小搞度限制 */
+    if (!!minHeight && windowHeight < minHeight) {
+      windowHeight = minHeight;
+    } else if (windowHeight < 0) {
+      windowHeight = 0;
+    }
+    /* 最大搞度限制 */
+    if (!!maxHeight && windowHeight > maxHeight) {
+      windowHeight = maxHeight;
+    }
 
-    window.style.width = windowWidth > 0 ? windowWidth + 'px' : 0;
-    window.style.height = windowHeight > 0 ? windowHeight + 'px' : 0;
+    window.style.width = windowWidth + 'px';
+    window.style.height = windowHeight + 'px';
     moveEvent.stopPropagation();
   }
 
   function _handleEndEventForResize(endEvent) {
-    /* 只有拖拽本体才有效 */
-    if (endEvent.target !== endEvent.currentTarget) {
-      return;
-    }
     document.removeEventListener(moveEvent, _handleMoveEventForResize, false); // 拖拽结束，清除移动的事件回调
 
     endEvent.preventDefault();
@@ -84,8 +101,10 @@ function _handleStartEventForResize(startEvent) {
     y: startPoint.y - window.offsetHeight, // 可以“近似”认为是window的offsetTop
   };
 
+  const { minWidth, maxWidth, minHeight, maxHeight } = this.params;
+
   document.addEventListener(moveEvent, _handleMoveEventForResize, false); // 应在拖拽开始后才绑定移动的事件回调
-  el.addEventListener(endEvent, _handleEndEventForResize); // 绑定endEvent
+  document.addEventListener(endEvent, _handleEndEventForResize); // 绑定endEvent
   startEvent.preventDefault();
   startEvent.stopPropagation();
 }
@@ -159,11 +178,28 @@ function _addResizeHandler(el) {
   el.appendChild(handler);
 }
 
+const DEFAULT_PARAMS = {
+  minWidth: 100,
+  maxWidth: null,
+  minHeight: 100,
+  maxHeight: null,
+};
+
+function _prepareParams(customParams) {
+  validate(customParams);
+  return Object.assign({}, DEFAULT_PARAMS, customParams);
+}
+
 Vue.directive('window', {
   startPoint: {},
-  bind(el) {
+  bind(el, binding) {
+    const customParams = binding.value;
+    const instance = {
+      params: _prepareParams(customParams), // 从指令绑定值取来参数
+    };
+
     /* 拖拽移动相关 */
-    el.addEventListener(startEvent, _handleStartEventForMove);
+    el.addEventListener(startEvent, _handleStartEventForMove.bind(instance));
     /* 拖拽调整大小相关 */
     if (!el.style.position || el.style.position === 'static') {
       el.style.position = 'relative';
@@ -171,7 +207,7 @@ Vue.directive('window', {
     _addResizeHandler(el);
     el.querySelector('.' + RESIZE_HANDLER_CLASSNAME).addEventListener(
       startEvent,
-      _handleStartEventForResize
+      _handleStartEventForResize.bind(instance)
     );
   },
 });

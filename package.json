@@ -12,6 +12,7 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "current-script-polyfill": "^1.0.0",
+    "validate": "^4.5.1",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1"
