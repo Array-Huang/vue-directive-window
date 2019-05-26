@@ -1,4 +1,9 @@
-import { moveEvent, endEvent, getClientPosition } from './common';
+import {
+  moveEvent,
+  endEvent,
+  getClientPosition,
+  isOutOfBrowser,
+} from './common';
 
 /**
  * 为了拖拽调整大小，绑定事件；
@@ -9,6 +14,10 @@ import { moveEvent, endEvent, getClientPosition } from './common';
  */
 export function handleStartEventForResize(startEvent) {
   function _handleMoveEventForResize(moveEvent) {
+    /* 判断鼠标是否已出浏览器窗口，是的话就限制拖拽，避免整个window出浏览器窗口 */
+    if (isOutOfBrowser(moveEvent)) {
+      return false;
+    }
     const position = getClientPosition(moveEvent); // 获取鼠标/手指的位置
     let windowWidth = position.x - standard.x;
     let windowHeight = position.y - standard.y;

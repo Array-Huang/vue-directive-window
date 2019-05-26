@@ -40,3 +40,16 @@ export function regexMatchTransform(transformCssText) {
 
   return translate;
 }
+
+export function isOutOfBrowser(event) {
+  if (
+    event.clientY > window.innerWidth ||
+    event.clientY < 0 ||
+    event.clientX < 0 ||
+    event.clientX > window.innerHeight
+  ) {
+    return true;
+  }
+
+  return false;
+}
