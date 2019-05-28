@@ -41,12 +41,17 @@ export function regexMatchTransform(transformCssText) {
   return translate;
 }
 
+/**
+ * 判断鼠标是否已出浏览器窗口
+ * @param {Event} event
+ * @return {Boolean}
+ */
 export function isOutOfBrowser(event) {
   if (
-    event.clientY > window.innerWidth ||
-    event.clientY < 0 ||
+    event.clientX > window.innerWidth ||
     event.clientX < 0 ||
-    event.clientX > window.innerHeight
+    event.clientY < 0 ||
+    event.clientY > window.innerHeight
   ) {
     return true;
   }
