@@ -14,6 +14,9 @@ const RULES = {
   maxHeight: {
     type: Number,
   },
+  moveHandler: {
+    type: String,
+  },
 };
 export function validate(customParams) {
   const schema = new Schema(RULES);
