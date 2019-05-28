@@ -14,7 +14,7 @@ const RULES = {
   maxHeight: {
     type: Number,
   },
-  moveHandler: {
+  customMoveHandler: {
     type: String,
   },
 };

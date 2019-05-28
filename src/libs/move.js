@@ -9,9 +9,9 @@ import {
 export function handleStartEventForMove(event) {
   function _handleEndEventForMove(event) {
     document.removeEventListener(moveEvent, _handleMoveEventForMove, false); // 拖拽结束，清除移动的事件回调
-
+    console.log('_handleEndEventForMove');
     /* 恢复cursor */
-    el.style.cursor = 'auto';
+    handler.style.cursor = 'auto';
 
     event.preventDefault();
   }
@@ -30,22 +30,23 @@ export function handleStartEventForMove(event) {
       y: position.y - startPoint.y + originTranslate.y,
     };
 
-    el.style.transform = `translate(${translate.x}px, ${translate.y}px)`;
+    window.style.transform = `translate(${translate.x}px, ${translate.y}px)`;
   }
 
   /* 只有拖拽本体才会挪动，拖拽子元素是不会挪动的 */
   if (event.target !== event.currentTarget) {
     return;
   }
-  const el = event.currentTarget; // event.currentTarget是绑定事件的element
+  const handler = event.currentTarget; // event.currentTarget是绑定事件的element
+  const window = this.window;
   const startPoint = getClientPosition(event); // 记录本次拖拽的起点位置
   document.addEventListener(moveEvent, _handleMoveEventForMove, false); // 应在拖拽开始后才绑定移动的事件回调
   document.addEventListener(endEvent, _handleEndEventForMove);
 
-  const originTranslate = regexMatchTransform(el.style.transform); // 解析transform: translate的值
+  const originTranslate = regexMatchTransform(window.style.transform); // 解析transform: translate的值
 
   /* 调整cursor */
-  el.style.cursor = 'all-scroll';
+  handler.style.cursor = 'all-scroll';
 
   event.preventDefault();
 }

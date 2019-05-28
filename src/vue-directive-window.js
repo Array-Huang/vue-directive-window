@@ -9,8 +9,8 @@ const DEFAULT_PARAMS = {
   maxWidth: null,
   minHeight: 100,
   maxHeight: null,
-  moveHandler: null,
   resizeHandlerClassName: 'window-resize-handler',
+  customMoveHandler: null,
 };
 
 function _prepareParams(customParams) {
@@ -20,20 +20,30 @@ function _prepareParams(customParams) {
 
 Vue.directive('window', {
   bind(el, binding) {
-    const customParams = binding.value;
+    const customParams = binding.value; // 从指令绑定值取来参数
+    debugger;
+    const finalParams = _prepareParams(customParams);
     const instance = {
       window: el,
-      params: _prepareParams(customParams), // 从指令绑定值取来参数
+      params: finalParams,
     };
 
     /* 拖拽移动相关 */
-    el.addEventListener(startEvent, handleStartEventForMove.bind(instance));
+    let resizeHandler = el;
+
+    if (finalParams.customMoveHandler) {
+      resizeHandler = el.querySelector(finalParams.customMoveHandler);
+    }
+    resizeHandler.addEventListener(
+      startEvent,
+      handleStartEventForMove.bind(instance)
+    );
 
     /* 拖拽调整大小相关 */
     if (!el.style.position || el.style.position === 'static') {
       el.style.position = 'relative';
     }
-    addResizeHandler(el, instance.params.resizeHandlerClassName.bind(instance));
+    addResizeHandler(el, instance.params.resizeHandlerClassName);
     el.querySelector(
       '.' + instance.params.resizeHandlerClassName
     ).addEventListener(startEvent, handleStartEventForResize.bind(instance));
