@@ -21,24 +21,34 @@ export function getClientPosition(event) {
 }
 
 /**
- * 从transform的css字符串里匹配出偏移值
+ * 获取当前的位置偏移值(left、top)
  *
- * @param {String} transformCssText
+ * @export
+ * @param {Node} node
  * @returns {Object}
  */
-export function regexMatchTransform(transformCssText) {
-  const translate = {
-    x: 0,
-    y: 0,
-  };
-  const regex = /^translate\((-?\d+).*px, (-?\d+).*px\)$/i;
-  const result = regex.exec(transformCssText);
-  if (result) {
-    translate.x = parseInt(result[1]);
-    translate.y = parseInt(result[2]);
-  }
+export function getPositionOffset(node) {
+  const styleLeft = parseInt(node.style.left);
+  const styleTop = parseInt(node.style.top);
 
-  return translate;
+  return {
+    x: styleLeft ? styleLeft : 0,
+    y: styleTop ? styleTop : 0,
+  };
+}
+
+/**
+ * 获取node的宽高
+ *
+ * @export
+ * @param {Node} node
+ */
+export function getSize(node) {
+  const computedStyle = window.getComputedStyle(node);
+  return {
+    width: computedStyle.getPropertyValue('width'),
+    height: computedStyle.getPropertyValue('height'),
+  };
 }
 
 /**

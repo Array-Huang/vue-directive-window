@@ -2,8 +2,7 @@
   <div class="home">
     <div class="box" v-window="params">
       <div class="resize-handler"></div>
-      <div class="content1"></div>
-      <div class="content2"></div>
+      <div class="maximize-handler"></div>
     </div>
   </div>
 </template>
@@ -19,6 +18,7 @@ export default {
         minHeight: 100,
         maxHeight: 400,
         customMoveHandler: '.resize-handler',
+        customMaximizeHandler: '.maximize-handler',
       },
     };
   },
@@ -50,10 +50,19 @@ export default {
   .resize-handler {
     width: 20px;
     height: 20px;
-    background-color red;
-    position:absolute
+    background-color: red;
+    position: absolute;
     left: 0;
     top: -20px;
+  }
+
+  .maximize-handler {
+    width: 20px;
+    height: 20px;
+    background-color: yellow;
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 }
 </style>

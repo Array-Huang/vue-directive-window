@@ -14,7 +14,13 @@ const RULES = {
   maxHeight: {
     type: Number,
   },
+  resizeHandlerClassName: {
+    type: String,
+  },
   customMoveHandler: {
+    type: String,
+  },
+  customMaximizeHandler: {
     type: String,
   },
 };

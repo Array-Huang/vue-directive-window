@@ -1,7 +1,7 @@
 import {
   moveEvent,
   endEvent,
-  regexMatchTransform,
+  getPositionOffset,
   getClientPosition,
   isOutOfBrowser,
 } from './common';
@@ -9,7 +9,7 @@ import {
 export function handleStartEventForMove(event) {
   function _handleEndEventForMove(event) {
     document.removeEventListener(moveEvent, _handleMoveEventForMove, false); // 拖拽结束，清除移动的事件回调
-    console.log('_handleEndEventForMove');
+
     /* 恢复cursor */
     handler.style.cursor = 'auto';
 
@@ -24,13 +24,14 @@ export function handleStartEventForMove(event) {
 
     const position = getClientPosition(event); // 获取鼠标/手指的位置
 
-    /* 计算transform:translate的值 */
-    const translate = {
-      x: position.x - startPoint.x + originTranslate.x,
-      y: position.y - startPoint.y + originTranslate.y,
+    /* 计算位置偏移值 */
+    const positionOffset = {
+      x: position.x - startPoint.x + originPositionOffset.x,
+      y: position.y - startPoint.y + originPositionOffset.y,
     };
 
-    window.style.transform = `translate(${translate.x}px, ${translate.y}px)`;
+    window.style.top = positionOffset.y + 'px'; // 设置纵坐标，即top
+    window.style.left = positionOffset.x + 'px'; // 设置横坐标，left
   }
 
   /* 只有拖拽本体才会挪动，拖拽子元素是不会挪动的 */
@@ -43,8 +44,7 @@ export function handleStartEventForMove(event) {
   document.addEventListener(moveEvent, _handleMoveEventForMove, false); // 应在拖拽开始后才绑定移动的事件回调
   document.addEventListener(endEvent, _handleEndEventForMove);
 
-  const originTranslate = regexMatchTransform(window.style.transform); // 解析transform: translate的值
-
+  const originPositionOffset = getPositionOffset(window); // 获取当前的位置偏移值
   /* 调整cursor */
   handler.style.cursor = 'all-scroll';
 
