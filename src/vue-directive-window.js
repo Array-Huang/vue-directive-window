@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { startEvent } from './libs/common';
-import { addResizeHandler, handleStartEventForResize } from './libs/resize';
+import { handleStartEventForResize } from './libs/resize';
 import { handleStartEventForMove } from './libs/move';
 import { addMaximizeEvent } from './libs/maximize';
 import { validate } from './libs/validate';
@@ -10,7 +10,6 @@ const DEFAULT_PARAMS = {
   maxWidth: null,
   minHeight: 100,
   maxHeight: null,
-  resizeHandlerClassName: 'window-resize-handler',
   customMoveHandler: null,
   customMaximizeHandler: null,
 };
@@ -44,10 +43,8 @@ Vue.directive('window', {
     if (!el.style.position || el.style.position === 'static') {
       el.style.position = 'relative';
     }
-    addResizeHandler(el, instance.params.resizeHandlerClassName);
-    el.querySelector(
-      '.' + instance.params.resizeHandlerClassName
-    ).addEventListener(startEvent, handleStartEventForResize.bind(instance));
+
+    el.addEventListener(startEvent, handleStartEventForResize.bind(instance));
 
     /* 最大化相关 */
     if (finalParams.customMaximizeHandler) {

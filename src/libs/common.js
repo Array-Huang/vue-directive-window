@@ -4,6 +4,14 @@ export const startEvent = isTouchEvent ? 'touchstart' : 'mousedown';
 export const moveEvent = isTouchEvent ? 'touchmove' : 'mousemove';
 export const endEvent = isTouchEvent ? 'touchend' : 'mouseup';
 
+function _refillPx(target) {
+  if (typeof target === 'number') {
+    return target + 'px';
+  }
+
+  return target;
+}
+
 /**
  * 从Event对象中获取当前鼠标/手指的位置
  *
@@ -37,6 +45,21 @@ export function getPositionOffset(node) {
   };
 }
 
+export function setPositionOffset(node, left, top, right, bottom) {
+  if (!!left || left === 0) {
+    node.style.left = _refillPx(left);
+  }
+  if (!!top || top === 0) {
+    node.style.top = _refillPx(top);
+  }
+  if (!!right || right === 0) {
+    node.style.right = _refillPx(right);
+  }
+  if (!!bottom || bottom === 0) {
+    node.style.bottom = _refillPx(bottom);
+  }
+}
+
 /**
  * 获取node的宽高
  *
@@ -49,6 +72,11 @@ export function getSize(node) {
     width: computedStyle.getPropertyValue('width'),
     height: computedStyle.getPropertyValue('height'),
   };
+}
+
+export function setSize(node, width, height) {
+  node.style.width = _refillPx(width);
+  node.style.height = _refillPx(height);
 }
 
 /**
@@ -67,4 +95,42 @@ export function isOutOfBrowser(event) {
   }
 
   return false;
+}
+/**
+ * 判断目标Element是否在拖拽移动的handler上
+ *
+ * @export
+ * @param {Node} targetEl
+ * @param {String} customMoveHandler
+ * @returns
+ */
+export function isInMoveHandler(targetEl, { customMoveHandler }) {
+  if (!customMoveHandler) {
+    return false;
+  }
+  const handler = document.querySelector(customMoveHandler);
+  if (!handler) {
+    return false;
+  }
+
+  return handler.contains(targetEl);
+}
+/**
+ * 判断目标Element是否在最大化的handler上
+ *
+ * @export
+ * @param {Node} targetEl
+ * @param {String} customMoveHandler
+ * @returns
+ */
+export function isInMaximizeHandler(targetEl, { customMaximizeHandler }) {
+  if (!customMaximizeHandler) {
+    return false;
+  }
+  const handler = document.querySelector(customMaximizeHandler);
+  if (!handler) {
+    return false;
+  }
+
+  return handler.contains(targetEl);
 }
