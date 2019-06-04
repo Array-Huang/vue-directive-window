@@ -113,7 +113,8 @@ function _calWidthAndOffset({
       maxHeight,
       currentHeight: calHeight,
     });
-    calTop = originOffset.y - (calHeight - originSize.Height); // 根据高度的变化量来决定窗口的top属性
+    calTop = originOffset.y - (calHeight - originSize.height); // 根据高度的变化量来决定窗口的top属性
+    console.log(calTop, calHeight, originSize.height);
   }
   /* 右边的拖拽调整大小 */
   if (type.indexOf('right') > -1) {
