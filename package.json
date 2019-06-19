@@ -1,6 +1,6 @@
 {
   "name": "vue-directive-window",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "private": false,
   "main": "./src/vue-directive-window.js",
   "scripts": {

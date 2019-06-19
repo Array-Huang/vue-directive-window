@@ -13,6 +13,47 @@ import {
 
 const RESIZE_SCOPE = 10;
 
+function _isOnOtherHandler(el, { moveHandler, maximizeHandler }) {
+  console.log(el, moveHandler, maximizeHandler);
+  return el === moveHandler || el === maximizeHandler;
+}
+
+function _setCursor(window, el, positionType) {
+  let cursor;
+  switch (positionType) {
+    case 'top':
+    case 'bottom':
+      cursor = 'n-resize';
+      break;
+
+    case 'left':
+    case 'right':
+      cursor = 'e-resize';
+      break;
+
+    case 'left-top':
+      cursor = 'nw-resize';
+      break;
+
+    case 'left-bottom':
+      cursor = 'sw-resize';
+      break;
+
+    case 'right-top':
+      cursor = 'ne-resize';
+      break;
+
+    case 'right-bottom':
+      cursor = 'se-resize';
+      break;
+  }
+  window.style.cursor = cursor;
+}
+
+function _resetCursor(window) {
+  window.style.cursor = '';
+}
+
 function _judgeResizeType(startPoint, target) {
   const x = startPoint.x;
   const y = startPoint.y;
@@ -201,4 +242,18 @@ export function handleStartEventForResize(startEvent) {
   document.addEventListener(endEvent, _handleEndEventForResize); // 绑定endEvent
   startEvent.preventDefault();
   startEvent.stopPropagation();
+}
+
+export function cursorChange(event) {
+  const target = this.window;
+  const currentPoint = getClientPosition(event); // 本次拖拽的起点位置
+  const type = _judgeResizeType(currentPoint, target); // 获取本次点击位于窗口的哪个区域
+
+  /* 点击位置位于窗口中央，重置cursor */
+  if (_isOnOtherHandler(event.target, this) || !type) {
+    console.log('reset');
+    _resetCursor(this.window);
+  } else {
+    _setCursor(this.window, event.target, type);
+  }
 }
