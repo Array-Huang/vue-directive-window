@@ -19,16 +19,38 @@ function _prepareParams(customParams) {
   return Object.assign({}, DEFAULT_PARAMS, customParams);
 }
 
+function getMoveHandler(finalParams, el) {
+  const customMoveHandler = finalParams.customMoveHandler;
+  if (customMoveHandler) {
+    if (typeof customMoveHandler === 'string') {
+      return el.querySelector(customMoveHandler);
+    } else {
+      return customMoveHandler;
+    }
+  } else {
+    return el;
+  }
+}
+
+function getMaximizeHandler(finalParams, el) {
+  const customMaximizeHandler = finalParams.customMaximizeHandler;
+  if (customMaximizeHandler) {
+    if (typeof customMaximizeHandler === 'string') {
+      return el.querySelector(customMaximizeHandler);
+    } else {
+      return customMaximizeHandler;
+    }
+  } else {
+    return el;
+  }
+}
+
 Vue.directive('window', {
   bind(el, binding) {
     const customParams = binding.value; // 从指令绑定值取来参数
     const finalParams = _prepareParams(customParams);
-    const moveHandler = finalParams.customMoveHandler
-      ? el.querySelector(finalParams.customMoveHandler)
-      : el;
-    const maximizeHandler = finalParams.customMaximizeHandler
-      ? el.querySelector(finalParams.customMaximizeHandler)
-      : el;
+    const moveHandler = getMoveHandler(finalParams, el);
+    const maximizeHandler = getMaximizeHandler(finalParams, el);
     const instance = {
       window: el,
       params: finalParams,
