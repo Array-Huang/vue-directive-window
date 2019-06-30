@@ -9,12 +9,11 @@ import {
   setPositionOffset,
   isInMoveHandler,
   isInMaximizeHandler,
+  judgeResizeType,
+  getStyle,
 } from './common';
 
-const RESIZE_SCOPE = 10;
-
 function _isOnOtherHandler(el, { moveHandler, maximizeHandler }) {
-  console.log(el, moveHandler, maximizeHandler);
   return el === moveHandler || el === maximizeHandler;
 }
 
@@ -51,44 +50,9 @@ function _setCursor(window, el, positionType) {
 }
 
 function _resetCursor(window) {
-  window.style.cursor = '';
-}
-
-function _judgeResizeType(startPoint, target) {
-  const x = startPoint.x;
-  const y = startPoint.y;
-  const offsetTop = target.offsetTop;
-  const offsetLeft = target.offsetLeft;
-  const offsetWidth = target.offsetWidth;
-  const offsetHeight = target.offsetHeight;
-
-  if (Math.abs(offsetLeft - x) <= RESIZE_SCOPE) {
-    if (Math.abs(offsetTop - y) <= RESIZE_SCOPE) {
-      return 'left-top';
-    } else if (Math.abs(offsetTop + offsetHeight - y) <= RESIZE_SCOPE) {
-      return 'left-bottom';
-    } else {
-      return 'left';
-    }
+  if (getStyle(window, 'cursor').indexOf('resize') > -1) {
+    window.style.cursor = '';
   }
-
-  if (Math.abs(offsetLeft + offsetWidth - x) <= RESIZE_SCOPE) {
-    if (Math.abs(offsetTop - y) <= RESIZE_SCOPE) {
-      return 'right-top';
-    } else if (Math.abs(offsetTop + offsetHeight - y) <= RESIZE_SCOPE) {
-      return 'right-bottom';
-    } else {
-      return 'right';
-    }
-  }
-
-  if (Math.abs(offsetTop - y) <= RESIZE_SCOPE) {
-    return 'top';
-  } else if (Math.abs(offsetTop + offsetHeight - y) <= RESIZE_SCOPE) {
-    return 'bottom';
-  }
-
-  return false;
 }
 
 function _calWidthAndOffset({
@@ -217,9 +181,9 @@ export function handleStartEventForResize(startEvent) {
   const params = this.params;
   const target = this.window;
   const startPoint = getClientPosition(startEvent); // 本次拖拽的起点位置
-  const type = _judgeResizeType(startPoint, target); // 获取本次点击位于窗口的哪个区域
+  const type = judgeResizeType(startPoint, target); // 获取本次点击位于窗口的哪个区域
   /* 点击位置位于窗口中央，不做任何处理 */
-  if (!type) {
+  if (type === 'middle') {
     return;
   }
   /* 判断是否点击在拖拽移动的handler上，是的话就不做处理 */
@@ -247,11 +211,10 @@ export function handleStartEventForResize(startEvent) {
 export function cursorChange(event) {
   const target = this.window;
   const currentPoint = getClientPosition(event); // 本次拖拽的起点位置
-  const type = _judgeResizeType(currentPoint, target); // 获取本次点击位于窗口的哪个区域
+  const type = judgeResizeType(currentPoint, target); // 获取本次点击位于窗口的哪个区域
 
   /* 点击位置位于窗口中央，重置cursor */
-  if (_isOnOtherHandler(event.target, this) || !type) {
-    console.log('reset');
+  if (_isOnOtherHandler(event.target, this) || type === 'middle') {
     _resetCursor(this.window);
   } else {
     _setCursor(this.window, event.target, type);

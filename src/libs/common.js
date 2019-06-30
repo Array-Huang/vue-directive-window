@@ -1,3 +1,5 @@
+import constant from '../config/constant';
+
 /* 判断当前应该采用mouse相关事件还是touch相关事件 */
 export const isTouchEvent = 'ontouchstart' in window;
 export const startEvent = isTouchEvent ? 'touchstart' : 'mousedown';
@@ -36,8 +38,8 @@ export function getClientPosition(event) {
  * @returns {Object}
  */
 export function getPositionOffset(node) {
-  const styleLeft = parseInt(node.style.left);
-  const styleTop = parseInt(node.style.top);
+  const styleLeft = parseInt(getStyle(node, 'left'));
+  const styleTop = parseInt(getStyle(node, 'top'));
 
   return {
     x: styleLeft ? styleLeft : 0,
@@ -133,4 +135,49 @@ export function isInMaximizeHandler(targetEl, { customMaximizeHandler }) {
   }
 
   return handler.contains(targetEl);
+}
+
+export function getStyle(el, prop) {
+  const computedStyle = window.getComputedStyle(el);
+  return computedStyle.getPropertyValue(prop);
+}
+
+export function judgeResizeType(cursorPoint, target) {
+  const borderScope = constant.BORDER_SCOPE;
+  const x = cursorPoint.x;
+  const y = cursorPoint.y;
+  const offsetTop = target.offsetTop;
+  const offsetLeft = target.offsetLeft;
+  const offsetWidth = target.offsetWidth;
+  const offsetHeight = target.offsetHeight;
+  // console.log(
+  //   `x:${x};y:${y};offsetTop:${offsetTop}；offsetLeft:${offsetLeft}；offsetWidth:${offsetWidth}；offsetHeight:${offsetHeight}；`
+  // );
+  if (Math.abs(offsetLeft - x) <= borderScope) {
+    if (Math.abs(offsetTop - y) <= borderScope) {
+      return 'left-top';
+    } else if (Math.abs(offsetTop + offsetHeight - y) <= borderScope) {
+      return 'left-bottom';
+    } else {
+      return 'left';
+    }
+  }
+
+  if (Math.abs(offsetLeft + offsetWidth - x) <= borderScope) {
+    if (Math.abs(offsetTop - y) <= borderScope) {
+      return 'right-top';
+    } else if (Math.abs(offsetTop + offsetHeight - y) <= borderScope) {
+      return 'right-bottom';
+    } else {
+      return 'right';
+    }
+  }
+
+  if (Math.abs(offsetTop - y) <= borderScope) {
+    return 'top';
+  } else if (Math.abs(offsetTop + offsetHeight - y) <= borderScope) {
+    return 'bottom';
+  }
+
+  return 'middle';
 }

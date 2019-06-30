@@ -1,18 +1,9 @@
-import Vue from 'vue';
 import { startEvent, moveEvent } from './libs/common';
 import { handleStartEventForResize, cursorChange } from './libs/resize';
 import { handleStartEventForMove } from './libs/move';
 import { addMaximizeEvent } from './libs/maximize';
 import { validate } from './libs/validate';
-
-const DEFAULT_PARAMS = {
-  minWidth: 100,
-  maxWidth: null,
-  minHeight: 100,
-  maxHeight: null,
-  customMoveHandler: null,
-  customMaximizeHandler: null,
-};
+import DEFAULT_PARAMS from './config/default-params';
 
 function _prepareParams(customParams) {
   validate(customParams);
@@ -40,41 +31,48 @@ function getMaximizeHandler(finalParams, el) {
     } else {
       return customMaximizeHandler;
     }
-  } else {
-    return el;
   }
+
+  return null;
 }
 
-Vue.directive('window', {
-  bind(el, binding) {
-    const customParams = binding.value; // 从指令绑定值取来参数
-    const finalParams = _prepareParams(customParams);
-    const moveHandler = getMoveHandler(finalParams, el);
-    const maximizeHandler = getMaximizeHandler(finalParams, el);
-    const instance = {
-      window: el,
-      params: finalParams,
-      moveHandler,
-      maximizeHandler,
-    };
+function isMoveHandlerEqualWindow(window, moveHandler) {
+  return window === moveHandler;
+}
 
-    /* 拖拽移动相关 */
-    moveHandler.addEventListener(
-      startEvent,
-      handleStartEventForMove.bind(instance)
-    );
+function install(Vue) {
+  Vue.directive('window', {
+    bind(el, binding) {
+      const customParams = binding.value; // 从指令绑定值取来参数
+      const finalParams = _prepareParams(customParams);
+      const moveHandler = getMoveHandler(finalParams, el);
+      const maximizeHandler = getMaximizeHandler(finalParams, el);
+      const instance = {
+        window: el,
+        params: finalParams,
+        moveHandler,
+        maximizeHandler,
+        isMoveHandlerEqualWindow: isMoveHandlerEqualWindow(el, moveHandler),
+      };
 
-    /* 拖拽调整大小相关 */
-    if (!el.style.position || el.style.position === 'static') {
-      el.style.position = 'relative';
-    }
+      /* 拖拽移动相关 */
+      moveHandler.addEventListener(
+        startEvent,
+        handleStartEventForMove.bind(instance)
+      );
 
-    el.addEventListener(startEvent, handleStartEventForResize.bind(instance));
-    el.addEventListener(moveEvent, cursorChange.bind(instance));
+      /* resize相关 */
+      el.addEventListener(startEvent, handleStartEventForResize.bind(instance));
+      el.addEventListener(moveEvent, cursorChange.bind(instance));
 
-    /* 最大化相关 */
-    if (maximizeHandler) {
-      addMaximizeEvent.call(instance, maximizeHandler);
-    }
-  },
-});
+      /* 最大化相关 */
+      if (maximizeHandler) {
+        addMaximizeEvent.call(instance, maximizeHandler);
+      }
+    },
+  });
+}
+
+export default {
+  install,
+};

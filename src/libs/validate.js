@@ -33,7 +33,6 @@ export function validate(customParams) {
     console.warn(
       'There are some mistakes in your params to vue-directive-window, please fix them. Otherwise, it will act not like what you expected.'
     );
-    console.log(errors);
     errors.forEach(error => {
       delete customParams[error.path];
       console.warn(error.message);

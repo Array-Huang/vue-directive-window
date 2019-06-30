@@ -1,13 +1,31 @@
 {
   "name": "vue-directive-window",
-  "version": "0.4.4",
+  "version": "0.5.0",
+  "description": "Vue.js directive that enhance your Modal Window, support drag, resize and maximize.",
+  "author": "Array Huang",
+  "license": "MIT",
+  "homepage": "https://github.com/Array-Huang/vue-directive-window",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Array-Huang/vue-directive-window.git",
+    "bugs": {
+      "url": "https://github.com/Array-Huang/vue-directive-window/issues"
+    }
+  },
+  "keywords": [
+    "vue", "directive", "resize", "drag", "maximize"
+  ],
   "private": false,
   "main": "./src/vue-directive-window.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --target lib --name vue-directive-window ./src/vue-directive-window.js",
+    "watch": "vue-cli-service build --target lib --name vue-directive-window ./src/vue-directive-window.js --watch",
     "lint": "vue-cli-service lint",
-    "start": "npm run serve"
+    "inspect": "vue inspect > dist.webpack.config.js",
+    "start": "npm run serve",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "dependencies": {
     "core-js": "^2.6.9",
@@ -27,6 +45,8 @@
     "eslint-plugin-vue": "^5.0.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
-    "vue-template-compiler": "^2.5.21"
+    "vue-template-compiler": "^2.5.21",
+    "vuepress": "^1.0.2",
+    "vuepress-plugin-demo-block": "^0.7.2"
   }
 }

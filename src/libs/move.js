@@ -4,6 +4,7 @@ import {
   getPositionOffset,
   getClientPosition,
   isOutOfBrowser,
+  judgeResizeType,
 } from './common';
 
 export function handleStartEventForMove(event) {
@@ -23,7 +24,6 @@ export function handleStartEventForMove(event) {
     }
 
     const position = getClientPosition(event); // 获取鼠标/手指的位置
-
     /* 计算位置偏移值 */
     const positionOffset = {
       x: position.x - startPoint.x + originPositionOffset.x,
@@ -34,13 +34,18 @@ export function handleStartEventForMove(event) {
     window.style.left = positionOffset.x + 'px'; // 设置横坐标，left
   }
 
-  /* 只有拖拽本体才会挪动，拖拽子元素是不会挪动的 */
-  if (event.target !== event.currentTarget) {
-    return;
-  }
   const handler = event.currentTarget; // event.currentTarget是绑定事件的element
   const window = this.window;
   const startPoint = getClientPosition(event); // 记录本次拖拽的起点位置
+
+  /* 当窗口本体作为MoveHandler时，需要判断拖拽的位置是否与resize重复 */
+  if (
+    this.isMoveHandlerEqualWindow &&
+    judgeResizeType(startPoint, window) !== 'middle'
+  ) {
+    return;
+  }
+
   document.addEventListener(moveEvent, _handleMoveEventForMove, false); // 应在拖拽开始后才绑定移动的事件回调
   document.addEventListener(endEvent, _handleEndEventForMove);
 

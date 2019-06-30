@@ -19,3 +19,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+dist.webpack.config.js
+docs/.vuepress/dist/
