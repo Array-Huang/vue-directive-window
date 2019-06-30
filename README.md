@@ -1,29 +1,44 @@
-# vue-directive-window
+<h1 align="center">Welcome to vue-directive-window 👋</h1>
+<p>
+  <img src="https://img.shields.io/badge/version-0.5.0-blue.svg?cacheSeconds=2592000" />
+  <a href="https://array-huang.github.io/vue-directive-window">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
+  </a>
+  <a href="https://github.com/Array-Huang/vue-directive-window/graphs/commit-activity">
+    <img alt="Maintenance" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" target="_blank" />
+  </a>
+  <a href="https://github.com/Array-Huang/vue-directive-window/blob/master/LICENSE">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" target="_blank" />
+  </a>
+</p>
 
-## Project setup
-```
+> Vue.js directive that enhance your Modal Window, support drag, resize and maximize.
+
+### 🏠 [Homepage](https://github.com/Array-Huang/vue-directive-window)
+
+## Install
+
+```sh
 npm install
 ```
 
-### Compiles and hot-reloads for development
-```
-npm run serve
+## Usage
+
+```sh
+npm run start
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Author
 
-### Run your tests
-```
-npm run test
-```
+👤 **Array Huang**
 
-### Lints and fixes files
-```
-npm run lint
-```
+* Github: [@Array-Huang](https://github.com/Array-Huang)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+## 📝 License
+
+Copyright © 2019 [Array Huang](https://github.com/Array-Huang).<br />
+This project is [MIT](https://github.com/Array-Huang/vue-directive-window/blob/master/LICENSE) licensed.
