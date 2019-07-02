@@ -24,7 +24,8 @@
     "inspect": "vue inspect > dist.webpack.config.js",
     "start": "npm run docs:dev",
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "docs:deploy": "sh script/deploy.sh"
   },
   "dependencies": {
     "core-js": "^2.6.9",
