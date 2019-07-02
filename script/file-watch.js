@@ -3,8 +3,8 @@ const path = require('path');
 const shell = require('shelljs');
 
 const WATCH_PATH = [
-  path.resolve(__filename, '../../dist/vue-directive-window.umd.min.js'),
-  path.resolve(__filename, '../../dist/vue-directive-window.umd.min.js.map'),
+  path.resolve(__filename, '../../dist/VueDirectiveWindow.umd.min.js'),
+  path.resolve(__filename, '../../dist/VueDirectiveWindow.umd.min.js.map'),
 ];
 const DIST_DIR = path.resolve(__filename, '../../docs/.vuepress/public');
 

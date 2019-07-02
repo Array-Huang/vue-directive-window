@@ -1,6 +1,8 @@
 <h1 align="center">Welcome to vue-directive-window 👋</h1>
 <p>
-  <img src="https://img.shields.io/badge/version-0.5.0-blue.svg?cacheSeconds=2592000" />
+  <a href="https://www.npmjs.com/package/vue-directive-window" target="_blank">
+    <img src="https://img.shields.io/badge/version-0.5.0-blue.svg?cacheSeconds=2592000" />
+  </a>
   <a href="https://array-huang.github.io/vue-directive-window">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" target="_blank" />
   </a>
