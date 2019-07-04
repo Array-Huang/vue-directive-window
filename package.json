@@ -1,6 +1,6 @@
 {
   "name": "vue-directive-window",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Vue.js directive that enhance your Modal Window, support drag, resize and maximize.",
   "author": "Array Huang",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "vue", "directive", "resize", "drag", "maximize"
   ],
   "private": false,
-  "main": "./src/main.js",
+  "main": "./dist/VueDirectiveWindow.common.js",
   "scripts": {
     "build": "vue-cli-service build --target lib --name VueDirectiveWindow ./src/main.js",
     "watch": "vue-cli-service build --target lib --name VueDirectiveWindow ./src/main.js --watch",
