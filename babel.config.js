@@ -3,7 +3,11 @@ module.exports = {
     [
       '@vue/app',
       {
-        useBuiltIns: false,
+        useBuiltIns: 'usage',
+        // esmodules: false,
+        // targets: {
+        //   browsers: ['> 1%', 'not ie <= 8', 'last 2 versions'],
+        // },
       },
     ],
   ],

@@ -55,6 +55,19 @@ function _resetCursor(window) {
   }
 }
 
+function _isDirectionResizable(direction) {
+  const resizableParams = this.params.resizable;
+  if (resizableParams === true) return true;
+  if (
+    Array.isArray(resizableParams) &&
+    resizableParams.indexOf(direction) > -1
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
 function _calWidthAndOffset({
   type,
   originSize,
@@ -186,8 +199,12 @@ export function handleStartEventForResize(startEvent) {
   if (type === 'middle') {
     return;
   }
-  /* 判断是否点击在拖拽移动的handler上，是的话就不做处理 */
+  /* 该方向上的resize是否启用 */
+  if (!_isDirectionResizable(type)) {
+    return;
+  }
   if (isInMoveHandler(eventEl, params)) {
+    /* 判断是否点击在拖拽移动的handler上，是的话就不做处理 */
     return;
   }
   /* 判断是否点击在最大化的handler上，是的话就不做处理 */
@@ -214,7 +231,11 @@ export function cursorChange(event) {
   const type = judgeResizeType(currentPoint, target); // 获取本次点击位于窗口的哪个区域
 
   /* 点击位置位于窗口中央，重置cursor */
-  if (_isOnOtherHandler(event.target, this) || type === 'middle') {
+  if (
+    _isOnOtherHandler(event.target, this) ||
+    type === 'middle' ||
+    !_isDirectionResizable(type)
+  ) {
     _resetCursor(this.window);
   } else {
     _setCursor(this.window, event.target, type);

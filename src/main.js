@@ -9,11 +9,11 @@ function install(Vue) {
   });
 }
 /* 供EnhancedWindow */
-export function enhance(el, customParams) {
+export function enhanceWindow(el, customParams) {
   eventBinding(el, customParams);
 }
 
 export default {
   install,
-  enhance,
+  enhanceWindow,
 };
