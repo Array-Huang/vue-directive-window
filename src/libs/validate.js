@@ -23,6 +23,13 @@ const RULES = {
   customMaximizeHandler: {
     type: String,
   },
+  movable: {
+    type: Boolean,
+    required: false,
+  },
+  resizable: {
+    required: false,
+  },
 };
 export function validate(customParams) {
   const schema = new Schema(RULES);

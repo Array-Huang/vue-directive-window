@@ -24,7 +24,7 @@
   </div>
 </template>
 <script>
-  Vue.use(window.VueDirectiveWindow);
+  Vue.use(window['vue-directive-window']);
   export default {
     data: () => ({
       windowParams: {
@@ -81,7 +81,7 @@
         minHeight: 100,
         maxHeight: 400,
       };
-      window.VueDirectiveWindow.enhance(windowElement, windowParams);
+      window['vue-directive-window'].enhanceWindow(windowElement, windowParams);
   }
   export default {
     data: () => ({

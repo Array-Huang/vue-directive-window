@@ -2,11 +2,11 @@ import { startEvent, moveEvent } from './common';
 import { handleStartEventForResize, cursorChange } from './resize';
 import { handleStartEventForMove } from './move';
 import { addMaximizeEvent } from './maximize';
-// import { validate } from './validate';
+import { validate } from './validate';
 import DEFAULT_PARAMS from '../config/default-params';
 
 function _prepareParams(customParams) {
-  // validate(customParams);
+  validate(customParams);
   return Object.assign({}, DEFAULT_PARAMS, customParams);
 }
 

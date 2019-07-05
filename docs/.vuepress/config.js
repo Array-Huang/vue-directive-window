@@ -2,7 +2,7 @@ module.exports = {
   base: '/vue-directive-window/',
   head: [
     ['script', { src: './vendor/vue.min.js' }],
-    ['script', { src: './VueDirectiveWindow.umd.min.js' }],
+    ['script', { src: './vue-directive-window.umd.min.js' }],
   ],
   themeConfig: {
     sidebar: ['/', '/install', '/case'],

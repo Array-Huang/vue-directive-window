@@ -200,7 +200,7 @@ export function handleStartEventForResize(startEvent) {
     return;
   }
   /* 该方向上的resize是否启用 */
-  if (!_isDirectionResizable(type)) {
+  if (!_isDirectionResizable.call(this, type)) {
     return;
   }
   if (isInMoveHandler(eventEl, params)) {
@@ -234,7 +234,7 @@ export function cursorChange(event) {
   if (
     _isOnOtherHandler(event.target, this) ||
     type === 'middle' ||
-    !_isDirectionResizable(type)
+    !_isDirectionResizable.call(this, type)
   ) {
     _resetCursor(this.window);
   } else {
