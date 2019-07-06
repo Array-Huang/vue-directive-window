@@ -5,7 +5,7 @@ module.exports = {
     ['script', { src: './vue-directive-window.umd.min.js' }],
   ],
   themeConfig: {
-    sidebar: ['/', '/install', '/case'],
+    sidebar: ['/', '/install', '/examples', 'params'],
     sidebarDepth: 2,
     lastUpdated: 'Last Updated',
   },

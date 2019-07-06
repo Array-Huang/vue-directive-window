@@ -8,7 +8,7 @@
 ```html
 <template>
   <div class="container">
-    <div class="window" v-show="ifShowWindow" v-window="windowParams">
+    <div class="window window1" v-show="ifShowWindow" v-window="windowParams">
       <div class="window__header">
         一般窗口
         <button class="maximize-btn" type="button">
@@ -61,11 +61,11 @@
   .container {
     padding: 30px;
   }
-  .window {
+  .window1 {
     width: 200px;
     position: fixed;
-    top: 290px;
-    left: 590px;
+    top: 60px;
+    left: 0;
   }
 </style>
 ```
@@ -79,7 +79,7 @@
 ```html
 <template>
   <div class="container">
-    <div class="window window--by-function" v-show="ifShowWindow">
+    <div class="window window2 window--by-function" v-show="ifShowWindow">
       <div class="window__header">
         函数方式生成的窗口
       </div>
@@ -106,10 +106,12 @@
     window['vue-directive-window'].enhanceWindow(windowElement, windowParams);
   }
   export default {
-    data: () => ({
-      ifShowWindow: false,
-      ifInited: false,
-    }),
+    data() {
+      return {
+        ifShowWindow: false,
+        ifInited: false,
+      };
+    },
     methods: {
       show() {
         this.ifShowWindow = true;
@@ -127,11 +129,11 @@
   .container {
     padding: 30px;
   }
-  .window {
+  .window2 {
     width: 200px;
     position: fixed;
-    top: 290px;
-    left: 590px;
+    top: 60px;
+    left: 200px;
   }
 </style>
 ```
@@ -145,7 +147,7 @@
 ```html
 <template>
   <div class="container">
-    <div class="window" v-show="ifShowWindow" v-window="windowParams">
+    <div class="window window3" v-show="ifShowWindow" v-window="windowParams">
       <div class="window__header">
         部分功能可用的窗口
       </div>
@@ -165,24 +167,26 @@
 <script>
   Vue.use(window['vue-directive-window']);
   export default {
-    data: () => ({
-      windowParams: {
-        movable: false,
-        resizable: ['left', 'left-top'],
-      },
-      ifShowWindow: false,
-    }),
+    data() {
+      return {
+        windowParams: {
+          movable: false,
+          resizable: ['left', 'left-top'],
+        },
+        ifShowWindow: false,
+      };
+    },
   };
 </script>
 <style>
   .container {
     padding: 30px;
   }
-  .window {
+  .window3 {
     width: 200px;
     position: fixed;
-    top: 290px;
-    left: 590px;
+    top: 60px;
+    left: 400px;
   }
 </style>
 ```
@@ -198,7 +202,7 @@
 ```html
 <template>
   <div class="container">
-    <div class="window" v-show="ifShowWindow" v-window="windowParams">
+    <div class="window window4" v-show="ifShowWindow" v-window="windowParams">
       <div class="window__header">
         指定拖拽移动的handler的窗口
       </div>
@@ -218,23 +222,25 @@
 <script>
   Vue.use(window['vue-directive-window']);
   export default {
-    data: () => ({
-      windowParams: {
-        customMoveHandler: '.window__header',
-      },
-      ifShowWindow: false,
-    }),
+    data() {
+      return {
+        windowParams: {
+          customMoveHandler: '.window__header',
+        },
+        ifShowWindow: false,
+      };
+    },
   };
 </script>
 <style>
   .container {
     padding: 30px;
   }
-  .window {
+  .window4 {
     width: 200px;
     position: fixed;
-    top: 290px;
-    left: 590px;
+    top: 60px;
+    left: 600px;
   }
 </style>
 ```
