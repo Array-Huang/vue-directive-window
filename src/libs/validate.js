@@ -30,6 +30,9 @@ const RULES = {
   resizable: {
     required: false,
   },
+  maximizeCallback: {
+    type: Function,
+  },
 };
 export function validate(customParams) {
   const schema = new Schema(RULES);

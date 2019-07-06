@@ -7,4 +7,5 @@ export default {
   resizable: true, // 是否开启resize功能，true表示开启，false表示关闭；另外还可接受数组类型参数，指定在哪些方向上开启resize，包括：left-top/left-bottom/left/right-top/right-bottom/right/top/bottom
   customMoveHandler: null, // 自定义的拖拽移动handler，可接受选择器形式的参数，或是Element；为空则以窗口自身为handler
   customMaximizeHandler: null, // 自定义的最大化handler，可接受选择器形式的参数，或是Element；为空则不开启最大化的功能
+  maximizeCallback: null, // 最大化后的回调函数
 };

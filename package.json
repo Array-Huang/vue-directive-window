@@ -20,10 +20,10 @@
     "maximize"
   ],
   "private": false,
-  "main": "./dist/vue-directive.umd.js",
+  "main": "./dist/vue-directive-window.umd.js",
   "scripts": {
-    "build": "vue-cli-service build --target lib --name vue-directive ./src/main.js",
-    "watch": "vue-cli-service build --target lib --name vue-directive ./src/main.js --watch",
+    "build": "vue-cli-service build --target lib --name vue-directive-window ./src/main.js",
+    "watch": "vue-cli-service build --target lib --name vue-directive-window ./src/main.js --watch",
     "lint": "vue-cli-service lint",
     "inspect": "vue inspect > dist.webpack.config.js",
     "start": "npm run docs:dev",

@@ -7,6 +7,7 @@ import { getPositionOffset, getSize } from './common';
  */
 export function addMaximizeEvent(handler) {
   const target = this.window;
+  const params = this.params;
   let positionOffset; // 记录最大化前的位置偏移(top/left)
   let size; // 记录最大化前的大小(width/height)
   let position; // 记录最大化前的position值
@@ -52,6 +53,13 @@ export function addMaximizeEvent(handler) {
       _setSize(size.width, size.height);
       window.removeEventListener('resize', _setTargetMaximize);
       isMaximize = false;
+    }
+
+    if (
+      !!params.maximizeCallback &&
+      typeof params.maximizeCallback === 'function'
+    ) {
+      params.maximizeCallback(isMaximize);
     }
   });
 }

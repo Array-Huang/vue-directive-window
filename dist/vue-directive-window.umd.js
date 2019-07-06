@@ -1,5 +1,14 @@
-module.exports =
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["vue-directive-window"] = factory();
+	else
+		root["vue-directive-window"] = factory();
+})((typeof self !== 'undefined' ? self : this), function() {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -3455,6 +3464,7 @@ function handleStartEventForMove(event) {
 
 function addMaximizeEvent(handler) {
   var target = this.window;
+  var params = this.params;
   var positionOffset; // 记录最大化前的位置偏移(top/left)
 
   var size; // 记录最大化前的大小(width/height)
@@ -3521,6 +3531,10 @@ function addMaximizeEvent(handler) {
       window.removeEventListener('resize', _setTargetMaximize);
       isMaximize = false;
     }
+
+    if (!!params.maximizeCallback && typeof params.maximizeCallback === 'function') {
+      params.maximizeCallback(isMaximize);
+    }
   });
 }
 // EXTERNAL MODULE: ./node_modules/core-js/modules/web.dom.iterable.js
@@ -3571,6 +3585,9 @@ var RULES = {
   },
   resizable: {
     required: false
+  },
+  maximizeCallback: {
+    type: Function
   }
 };
 function validate(customParams) {
@@ -3603,7 +3620,9 @@ function validate(customParams) {
   // 是否开启resize功能，true表示开启，false表示关闭；另外还可接受数组类型参数，指定在哪些方向上开启resize，包括：left-top/left-bottom/left/right-top/right-bottom/right/top/bottom
   customMoveHandler: null,
   // 自定义的拖拽移动handler，可接受选择器形式的参数，或是Element；为空则以窗口自身为handler
-  customMaximizeHandler: null // 自定义的最大化handler，可接受选择器形式的参数，或是Element；为空则不开启最大化的功能
+  customMaximizeHandler: null,
+  // 自定义的最大化handler，可接受选择器形式的参数，或是Element；为空则不开启最大化的功能
+  maximizeCallback: null // 最大化后的回调函数
 
 });
 // CONCATENATED MODULE: ./src/libs/event-binding.js
@@ -3726,4 +3745,5 @@ module.exports = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u20
 /***/ })
 
 /******/ })["default"];
-//# sourceMappingURL=vue-directive.common.js.map
+});
+//# sourceMappingURL=vue-directive-window.umd.js.map
