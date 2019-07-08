@@ -1,4 +1,10 @@
-import { startEvent, moveEvent } from './common';
+import {
+  startEvent,
+  moveEvent,
+  endEvent,
+  ignoreIframe,
+  recoverIframe,
+} from './common';
 import { handleStartEventForResize, cursorChange } from './resize';
 import { handleStartEventForMove } from './move';
 import { addMaximizeEvent } from './maximize';
@@ -51,6 +57,18 @@ export function eventBinding(el, customParams) {
     maximizeHandler,
     isMoveHandlerEqualWindow: isMoveHandlerEqualWindow(el, moveHandler),
   };
+
+  /* 一些杂项的处理 */
+  el.addEventListener(startEvent, () => {
+    ignoreIframe(el); // 由于iframe会把moveEvent吃掉，因此需要忽略掉iframe;
+    el.addEventListener(
+      endEvent,
+      () => {
+        recoverIframe(el); // 恢复iframe的功能
+      },
+      { once: true }
+    );
+  });
 
   /* 拖拽移动相关 */
   if (finalParams.movable) {

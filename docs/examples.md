@@ -3,6 +3,9 @@
 ## Vue 自定义指令 v-window 的基本使用案例
 
 本案例包含 3 个特性：拖拽移动、调整大小、窗口最大化。
+
+注意：
+- `<iframe />`会把移动事件（`touchmove`和`mousemove`）吞掉，造成鼠标进入`<iframe />`区域后便不再响应拖拽移动或是调整大小的功能；`vue-directive-window`已经对这种场景做了相应的处理，现在你可以愉快的在窗口内使用`<iframe />`了。
 ::: demo
 
 ```html
@@ -21,9 +24,7 @@
         </button>
       </div>
       <div class="window__body">
-        <p>窗口内容1</p>
-        <p>窗口内容2</p>
-        <p>窗口内容3</p>
+        <iframe height="100%" width="100%" frameborder="0" src="https://array-huang.github.io/vue-directive-window/">
       </div>
     </div>
 
@@ -45,9 +46,9 @@
       return {
         windowParams: {
           minWidth: 10,
-          maxWidth: 400,
+          maxWidth: 800,
           minHeight: 100,
-          maxHeight: 400,
+          maxHeight: 800,
           customMaximizeHandler: '.maximize-btn',
           maximizeCallback: maximizeCb.bind(this),
         },
@@ -62,7 +63,7 @@
     padding: 30px;
   }
   .window1 {
-    width: 200px;
+    width: 400px;
     position: fixed;
     top: 60px;
     left: 0;
@@ -246,3 +247,4 @@
 ```
 
 :::
+

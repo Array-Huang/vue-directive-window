@@ -1,5 +1,5 @@
 import { eventBinding } from './libs/event-binding';
-/* 供vue-directive-window */
+/* vue-directive-window，提供Vue.use方式安装，安装后将可使用v-title这一自定义指令 */
 function install(Vue) {
   Vue.directive('window', {
     bind(el, binding) {
@@ -8,7 +8,7 @@ function install(Vue) {
     },
   });
 }
-/* 供EnhancedWindow */
+/* EnhancedWindow，提供普通函数的方式来调用  */
 function enhanceWindow(el, customParams) {
   eventBinding(el, customParams);
 }

@@ -181,3 +181,24 @@ export function judgeResizeType(cursorPoint, target) {
 
   return 'middle';
 }
+
+function _iframeWalk(window, func) {
+  const iframeEls = window.querySelectorAll('iframe');
+  if (!!iframeEls && iframeEls.length > 0) {
+    Array.prototype.forEach.call(iframeEls, iframe => {
+      func(iframe);
+    });
+  }
+}
+
+export function ignoreIframe(window) {
+  _iframeWalk(window, iframe => {
+    iframe.style['pointer-events'] = 'none';
+  });
+}
+
+export function recoverIframe(window) {
+  _iframeWalk(window, iframe => {
+    iframe.style['pointer-events'] = 'auto';
+  });
+}
