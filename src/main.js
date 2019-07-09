@@ -1,3 +1,5 @@
+import 'core-js/es7/object';
+import 'core-js/es6/symbol';
 import { eventBinding } from './libs/event-binding';
 /* vue-directive-window，提供Vue.use方式安装，安装后将可使用v-title这一自定义指令 */
 function install(Vue) {

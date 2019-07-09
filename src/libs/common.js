@@ -15,6 +15,16 @@ function _refillPx(target) {
 }
 
 /**
+ * 判断当前用户是否使用IE浏览器访问
+ *
+ * @returns {Boolean}
+ */
+function isIE() {
+  if (!!window.ActiveXObject || 'ActiveXObject' in window) return true;
+  else return false;
+}
+
+/**
  * 从Event对象中获取当前鼠标/手指的位置
  *
  * @param {Event} event
@@ -139,7 +149,32 @@ export function isInMaximizeHandler(targetEl, { customMaximizeHandler }) {
 
 export function getStyle(el, prop) {
   const computedStyle = window.getComputedStyle(el);
-  return computedStyle.getPropertyValue(prop);
+  const styleValue = computedStyle.getPropertyValue(prop);
+  /* 
+    需要对IE下的`getComputedStyle()`进行兼容，目前已知在css里设置`right: 0`的时候，
+    再用`getComputedStyle()`取left属性的时候只取到`auto` 
+  */
+  if (isIE()) {
+    if (prop === 'left' && styleValue === 'auto') {
+      const elWidth = computedStyle.getPropertyValue('width');
+      const elRight = computedStyle.getPropertyValue('right');
+      console.log('left:', window.innerWidth - parseFloat(elWidth) + 'px');
+      return (
+        window.innerWidth - parseFloat(elWidth) - parseFloat(elRight) + 'px'
+      );
+    }
+
+    if (prop === 'top' && styleValue === 'auto') {
+      const elHeight = computedStyle.getPropertyValue('height');
+      const elBottom = computedStyle.getPropertyValue('bottom');
+      console.log('top:', window.innerHeight - parseFloat(elHeight) + 'px');
+      return (
+        window.innerHeight - parseFloat(elHeight) - parseFloat(elBottom) + 'px'
+      );
+    }
+  }
+
+  return styleValue;
 }
 
 export function judgeResizeType(cursorPoint, target) {

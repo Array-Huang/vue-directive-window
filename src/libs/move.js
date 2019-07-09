@@ -32,6 +32,8 @@ export function handleStartEventForMove(event) {
 
     window.style.top = positionOffset.y + 'px'; // 设置纵坐标，即top
     window.style.left = positionOffset.x + 'px'; // 设置横坐标，left
+    window.style.bottom = 'auto'; // 必须设置为auto，否则就会把高度撑起来
+    window.style.right = 'auto'; // 必须设置为auto，否则就会把宽度撑起来
   }
 
   const handler = event.currentTarget; // event.currentTarget是绑定事件的element

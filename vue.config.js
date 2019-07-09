@@ -10,7 +10,7 @@ hash: [hash]
 `;
 
 module.exports = {
-  transpileDependencies: ['strip-ansi'],
+  // transpileDependencies: ['validate'],
   chainWebpack: config => {
     config.output.libraryExport('default');
     config.plugin('banner').use(webpack.BannerPlugin, [
