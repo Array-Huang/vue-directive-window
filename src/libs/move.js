@@ -5,6 +5,8 @@ import {
   getClientPosition,
   isOutOfBrowser,
   judgeResizeType,
+  getSize,
+  setSize,
 } from './common';
 
 export function handleStartEventForMove(event) {
@@ -47,6 +49,13 @@ export function handleStartEventForMove(event) {
   ) {
     return;
   }
+
+  let size = getSize(window);
+  size = {
+    width: parseInt(size.width),
+    height: parseInt(size.height),
+  };
+  setSize(window, size.width, size.height);
 
   document.addEventListener(moveEvent, _handleMoveEventForMove, false); // 应在拖拽开始后才绑定移动的事件回调
   document.addEventListener(endEvent, _handleEndEventForMove);

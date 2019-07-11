@@ -4,7 +4,7 @@
  * (c) 2019 Array-Huang
  * Released under the MIT License.
  * Github: https://github.com/Array-Huang/vue-directive-window
- * hash: 9b86fb1c7e6aac4e0427
+ * hash: 2cc75f621d0e973f4a17
  * 
  */
 module.exports =
@@ -4176,6 +4176,12 @@ function handleStartEventForMove(event) {
     return;
   }
 
+  var size = getSize(window);
+  size = {
+    width: parseInt(size.width),
+    height: parseInt(size.height)
+  };
+  setSize(window, size.width, size.height);
   document.addEventListener(common_moveEvent, _handleMoveEventForMove, false); // 应在拖拽开始后才绑定移动的事件回调
 
   document.addEventListener(common_endEvent, _handleEndEventForMove);
