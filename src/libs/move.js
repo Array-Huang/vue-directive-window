@@ -42,8 +42,9 @@ export function handleStartEventForMove(event) {
   const window = this.window;
   const startPoint = getClientPosition(event); // 记录本次拖拽的起点位置
 
-  /* 当窗口本体作为MoveHandler时，需要判断拖拽的位置是否与resize重复 */
+  /* 当窗口本体作为MoveHandler且启用resize特性时，需要判断拖拽的位置是否与resize重复 */
   if (
+    this.params.resizable &&
     this.isMoveHandlerEqualWindow &&
     judgeResizeType(startPoint, window) !== 'middle'
   ) {
