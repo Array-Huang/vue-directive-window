@@ -17,6 +17,11 @@ export function handleStartEventForMove(event) {
     handler.style.cursor = 'auto';
 
     event.preventDefault();
+
+    /* 撤销moving状态，但由于此状态值主要用于吞掉click事件，因此使用setTimeout延长moving状态至click事件结束 */
+    setTimeout(() => {
+      window.className = window.className.replace(/ ?moving/, '');
+    }, 0);
   }
 
   function _handleMoveEventForMove(event) {
@@ -36,6 +41,11 @@ export function handleStartEventForMove(event) {
     window.style.left = positionOffset.x + 'px'; // 设置横坐标，left
     window.style.bottom = 'auto'; // 必须设置为auto，否则就会把高度撑起来
     window.style.right = 'auto'; // 必须设置为auto，否则就会把宽度撑起来
+
+    /* 设置moving状态，主要用于吞掉click事件 */
+    if (window.className.indexOf('moving') === -1) {
+      window.className += ' moving';
+    }
   }
 
   const handler = event.currentTarget; // event.currentTarget是绑定事件的element
@@ -51,6 +61,7 @@ export function handleStartEventForMove(event) {
     return;
   }
 
+  /* 固定窗口宽高 */
   let size = getSize(window);
   size = {
     width: parseInt(size.width),

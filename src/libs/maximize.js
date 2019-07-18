@@ -39,7 +39,7 @@ export function addMaximizeEvent(handler) {
   }
 
   /* 在最大化的handler绑定click事件回调 */
-  handler.addEventListener('click', () => {
+  handler.addEventListener('click', event => {
     if (!isMaximize) {
       positionOffset = getPositionOffset(target); // 记录最大化前的位置偏移
       size = getSize(target); // 记录最大化前的窗口大小
@@ -61,5 +61,7 @@ export function addMaximizeEvent(handler) {
     ) {
       params.maximizeCallback(isMaximize);
     }
+
+    event.stopPropagation();
   });
 }

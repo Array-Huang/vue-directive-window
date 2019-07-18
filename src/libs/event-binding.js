@@ -76,12 +76,26 @@ export function eventBinding(el, customParams) {
       startEvent,
       handleStartEventForMove.bind(instance)
     );
+
+    /* 当处在moving状态的时候，吞掉click事件 */
+    moveHandler.addEventListener('click', event => {
+      if (moveHandler.className.indexOf('moving') > -1) {
+        event.stopImmediatePropagation();
+      }
+    });
   }
 
   /* resize相关 */
   if (finalParams.resizable) {
     el.addEventListener(startEvent, handleStartEventForResize.bind(instance));
     el.addEventListener(moveEvent, cursorChange.bind(instance));
+
+    /* 当处在resizing状态的时候，吞掉click事件 */
+    el.addEventListener('click', event => {
+      if (el.className.indexOf('resizing') > -1) {
+        event.stopImmediatePropagation();
+      }
+    });
   }
 
   /* 最大化相关 */
