@@ -15,9 +15,6 @@ export function handleStartEventForMove(event) {
   function _handleEndEventForMove(event) {
     document.removeEventListener(moveEvent, _handleMoveEventForMove, false); // 拖拽结束，清除移动的事件回调
 
-    /* 恢复cursor */
-    handler.style.cursor = 'auto';
-
     event.preventDefault();
 
     /* 撤销moving状态，但由于此状态值主要用于吞掉click事件，因此使用setTimeout延长moving状态至click事件结束 */
@@ -58,7 +55,6 @@ export function handleStartEventForMove(event) {
     }
   }
 
-  const handler = event.currentTarget; // event.currentTarget是绑定事件的element
   const window = this.window;
   const startPoint = getClientPosition(event); // 记录本次拖拽的起点位置
 
@@ -83,8 +79,6 @@ export function handleStartEventForMove(event) {
   document.addEventListener(endEvent, _handleEndEventForMove);
 
   const originPositionOffset = getPositionOffset(window); // 获取当前的位置偏移值
-  /* 调整cursor */
-  handler.style.cursor = 'all-scroll';
 
   event.preventDefault();
 }
