@@ -54,9 +54,8 @@
         var windowElement = document.querySelector('.window--by-function');
         var windowParams = {
           minWidth: 10,
-          maxWidth: 400,
           minHeight: 100,
-          maxHeight: 400,
+          // customMoveHandler: '.window__header',
         };
         window['vue-directive-window'].enhanceWindow(
           windowElement,

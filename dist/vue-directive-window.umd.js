@@ -4,7 +4,7 @@
  * (c) 2019 Array-Huang
  * Released under the MIT License.
  * Github: https://github.com/Array-Huang/vue-directive-window
- * hash: d8a2b4c977040c92545b
+ * hash: 84828f2f95c72e55fa3a
  * 
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -2136,7 +2136,12 @@ var web_dom_iterable = __webpack_require__("f763");
 
 // CONCATENATED MODULE: ./src/config/constant.js
 /* harmony default export */ var constant = ({
-  BORDER_SCOPE: 10
+  BORDER_SCOPE: 10,
+  // resize区域的宽度
+  AVAILABLE_CLICK_MAX_MOVE_DISTANCE: 4,
+  // 在move中，超出这个距离的话将把click事件吞掉
+  AVAILABLE_CLICK_MAX_RESIZE_DISTANCE: 4 // 在resize中，超出这个距离的话将把click事件吞掉
+
 });
 // CONCATENATED MODULE: ./src/libs/common.js
 
@@ -2379,7 +2384,23 @@ function recoverIframe(window) {
     iframe.style['pointer-events'] = 'auto';
   });
 }
+/* 计算两点间距离 */
+
+function calDistance(_ref3) {
+  var x1 = _ref3.x1,
+      y1 = _ref3.y1,
+      x2 = _ref3.x2,
+      y2 = _ref3.y2;
+  var result = Math.pow(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2), 0.5); // console.log({ x1, y1, x2, y2 }, result);
+
+  return result;
+}
+// EXTERNAL MODULE: ./node_modules/_core-js@2.6.9@core-js/modules/es6.regexp.replace.js
+var es6_regexp_replace = __webpack_require__("34a3");
+
 // CONCATENATED MODULE: ./src/libs/resize.js
+
+
 
 
 function _isOnOtherHandler(el, _ref) {
@@ -2593,6 +2614,16 @@ function handleStartEventForResize(startEvent) {
     setSize(target, calWidth, calHeight);
     setPositionOffset(target, calLeft, calTop);
     moveEvent.stopPropagation();
+    /* 设置resizing状态，主要用于吞掉click事件 */
+
+    if (calDistance({
+      x1: nowPosition.x,
+      y1: nowPosition.y,
+      x2: startPoint.x,
+      y2: startPoint.y
+    }) > constant.AVAILABLE_CLICK_MAX_RESIZE_DISTANCE && target.className.indexOf('resizing') === -1) {
+      target.className += ' resizing';
+    }
   }
 
   function _handleEndEventForResize(endEvent) {
@@ -2600,6 +2631,11 @@ function handleStartEventForResize(startEvent) {
 
     endEvent.preventDefault();
     endEvent.stopPropagation();
+    /* 撤销moving状态，但由于此状态值主要用于吞掉click事件，因此使用setTimeout延长moving状态至click事件结束 */
+
+    setTimeout(function () {
+      target.className = target.className.replace(/ ?resizing/, '');
+    }, 0);
   }
 
   var eventEl = startEvent.target;
@@ -2659,19 +2695,14 @@ function cursorChange(event) {
     _setCursor(this.window, event.target, type);
   }
 }
-// EXTERNAL MODULE: ./node_modules/_core-js@2.6.9@core-js/modules/es6.regexp.replace.js
-var es6_regexp_replace = __webpack_require__("34a3");
-
 // CONCATENATED MODULE: ./src/libs/move.js
+
 
 
 function handleStartEventForMove(event) {
   function _handleEndEventForMove(event) {
     document.removeEventListener(common_moveEvent, _handleMoveEventForMove, false); // 拖拽结束，清除移动的事件回调
 
-    /* 恢复cursor */
-
-    handler.style.cursor = 'auto';
     event.preventDefault();
     /* 撤销moving状态，但由于此状态值主要用于吞掉click事件，因此使用setTimeout延长moving状态至click事件结束 */
 
@@ -2704,12 +2735,15 @@ function handleStartEventForMove(event) {
 
     /* 设置moving状态，主要用于吞掉click事件 */
 
-    if (window.className.indexOf('moving') === -1) {
+    if (calDistance({
+      x1: position.x,
+      y1: position.y,
+      x2: startPoint.x,
+      y2: startPoint.y
+    }) > constant.AVAILABLE_CLICK_MAX_MOVE_DISTANCE && window.className.indexOf('moving') === -1) {
       window.className += ' moving';
     }
   }
-
-  var handler = event.currentTarget; // event.currentTarget是绑定事件的element
 
   var window = this.window;
   var startPoint = getClientPosition(event); // 记录本次拖拽的起点位置
@@ -2733,9 +2767,6 @@ function handleStartEventForMove(event) {
   document.addEventListener(common_endEvent, _handleEndEventForMove);
   var originPositionOffset = getPositionOffset(window); // 获取当前的位置偏移值
 
-  /* 调整cursor */
-
-  handler.style.cursor = 'all-scroll';
   event.preventDefault();
 }
 // CONCATENATED MODULE: ./src/libs/maximize.js
@@ -2996,13 +3027,6 @@ function eventBinding(el, customParams) {
   if (finalParams.resizable) {
     el.addEventListener(common_startEvent, handleStartEventForResize.bind(instance));
     el.addEventListener(common_moveEvent, cursorChange.bind(instance));
-    /* 当处在resizing状态的时候，吞掉click事件 */
-
-    el.addEventListener('click', function (event) {
-      if (el.className.indexOf('resizing') > -1) {
-        event.stopImmediatePropagation();
-      }
-    });
   }
   /* 最大化相关 */
 
@@ -3010,6 +3034,14 @@ function eventBinding(el, customParams) {
   if (maximizeHandler) {
     addMaximizeEvent.call(instance, maximizeHandler);
   }
+  /* 当处在resizing/moving状态的时候，吞掉click事件 */
+
+
+  el.addEventListener('click', function (event) {
+    if (el.className.indexOf('moving') > -1 || el.className.indexOf('resizing') > -1) {
+      event.stopImmediatePropagation();
+    }
+  });
 }
 // CONCATENATED MODULE: ./src/main.js
 
