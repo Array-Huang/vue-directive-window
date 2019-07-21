@@ -89,17 +89,20 @@ export function eventBinding(el, customParams) {
   if (finalParams.resizable) {
     el.addEventListener(startEvent, handleStartEventForResize.bind(instance));
     el.addEventListener(moveEvent, cursorChange.bind(instance));
-
-    /* 当处在resizing状态的时候，吞掉click事件 */
-    el.addEventListener('click', event => {
-      if (el.className.indexOf('resizing') > -1) {
-        event.stopImmediatePropagation();
-      }
-    });
   }
 
   /* 最大化相关 */
   if (maximizeHandler) {
     addMaximizeEvent.call(instance, maximizeHandler);
   }
+
+  /* 当处在resizing/moving状态的时候，吞掉click事件 */
+  el.addEventListener('click', event => {
+    if (
+      el.className.indexOf('moving') > -1 ||
+      el.className.indexOf('resizing') > -1
+    ) {
+      event.stopImmediatePropagation();
+    }
+  });
 }

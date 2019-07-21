@@ -39,7 +39,7 @@
     </style>
   </head>
   <body>
-    <div class="window window2 window--by-function" v-show="ifShowWindow">
+    <div class="window window2 window--by-function">
       <div class="window__header">
         函数方式生成的窗口
       </div>
@@ -65,6 +65,12 @@
       }
 
       enhanceWindow();
+
+      document
+        .querySelector('.window--by-function')
+        .addEventListener('click', () => {
+          console.log('触发了click事件');
+        });
     </script>
   </body>
 </html>

@@ -237,3 +237,9 @@ export function recoverIframe(window) {
     iframe.style['pointer-events'] = 'auto';
   });
 }
+/* 计算两点间距离 */
+export function calDistance({ x1, y1, x2, y2 }) {
+  const result = Math.pow(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2), 0.5);
+  // console.log({ x1, y1, x2, y2 }, result);
+  return result;
+}

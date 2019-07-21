@@ -7,7 +7,9 @@ import {
   judgeResizeType,
   getSize,
   setSize,
+  calDistance,
 } from './common';
+import constant from '../config/constant';
 
 export function handleStartEventForMove(event) {
   function _handleEndEventForMove(event) {
@@ -43,7 +45,15 @@ export function handleStartEventForMove(event) {
     window.style.right = 'auto'; // 必须设置为auto，否则就会把宽度撑起来
 
     /* 设置moving状态，主要用于吞掉click事件 */
-    if (window.className.indexOf('moving') === -1) {
+    if (
+      calDistance({
+        x1: position.x,
+        y1: position.y,
+        x2: startPoint.x,
+        y2: startPoint.y,
+      }) > constant.AVAILABLE_CLICK_MAX_MOVE_DISTANCE &&
+      window.className.indexOf('moving') === -1
+    ) {
       window.className += ' moving';
     }
   }
