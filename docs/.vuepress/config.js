@@ -8,7 +8,7 @@ module.exports = {
     /* 导航栏链接 */
     nav: [
       {
-        text: 'github',
+        text: 'Github',
         link: 'https://github.com/Array-Huang/vue-directive-window',
       },
       {
@@ -17,7 +17,7 @@ module.exports = {
       },
     ],
     /* 侧边栏 */
-    sidebar: ['/', '/install', '/examples', 'params'],
+    sidebar: ['/getting-started', '/install', '/examples', 'params'],
     sidebarDepth: 2,
     /* 最后更新时间 */
     lastUpdated: 'Last Updated',
