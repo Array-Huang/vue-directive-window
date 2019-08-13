@@ -17,7 +17,7 @@ module.exports = {
       },
     ],
     /* 侧边栏 */
-    sidebar: ['/getting-started', '/install', '/examples', 'params'],
+    sidebar: ['/getting-started', '/examples', 'params'],
     sidebarDepth: 2,
     /* 最后更新时间 */
     lastUpdated: 'Last Updated',
