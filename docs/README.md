@@ -1,15 +1,15 @@
 ---
 home: true
 heroText: vue-directive-window
-tagline: 让你的模态框轻而易举地支持类窗口操作
-actionText: 快速上手 →
-actionLink: /getting-started/
+tagline: Vue.js directive that enhance your Modal Window, support drag, resize and maximize.
+actionText: Quick Start →
+actionLink: /quick-start/
 features:
-- title: 节约成本
-  details: 旨在以极少的改造成本，让一个现有的模态框或任何合适的HTMLElement轻松支持拖拽移动、调整大小、最大化等类视窗操作。
-- title: 使用便捷
-  details: 同时提供Vue自定义指令以及一般js类库两种调用方式。
-- title: 可插拔
-  details: 可以随时为某个系统里已存在的模块添上/去除类视窗操作的功能，而不会影响该模块原有的功能。
+- title: Cost Saving
+  details: Born to enhance your existed Modal Window or any other approprite HTMLElement, support drag, resize and miximize, with minimum cost.
+- title: Easy to Use
+  details: We provide two ways to use, Vue Custom Directive, and general javascript class library.
+- title: Pluggable
+  details: Annytime to add or remove Window-Like enhancement to any existed module in your system, without any negative impact.
 footer: MIT Licensed | Copyright © 2019-present Array Huang
 ---

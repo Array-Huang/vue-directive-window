@@ -1,13 +1,11 @@
-# Examples
+# 使用案例
 
-## Vue Custom Directive `v-window` Basic Example
+## Vue 自定义指令 v-window 的基本使用案例
 
-Contain three feature: drag, resize, maximize.
+本案例包含 3 个特性：拖拽移动、调整大小、窗口最大化。
 
-::: warning
-`<iframe />` will swallow the touch/mouse event, include `touchmove` and `mousemove` which are dependent by drag and resize feature. Therefor, when mouse/finger move into the `<iframe />` area, there will be no any response for drag/resize. Fortunatly, I have already considered this situation and finally fix it, so you won't be conserned.
-:::
-
+注意：
+- `<iframe />`会把移动事件（`touchmove`和`mousemove`）吞掉，造成鼠标进入`<iframe />`区域后便不再响应拖拽移动或是调整大小的功能；`vue-directive-window`已经对这种场景做了相应的处理，现在你可以愉快的在窗口内使用`<iframe />`了。
 ::: demo
 
 ```html
@@ -15,13 +13,13 @@ Contain three feature: drag, resize, maximize.
   <div class="container">
     <div class="window window1" v-show="ifShowWindow" v-window="windowParams">
       <div class="window__header">
-        Basic Example
+        一般窗口
         <button class="maximize-btn" type="button">
           <template v-if="!isMaximize"
-            >maximize</template
+            >点这放大</template
           >
           <template v-else
-            >minimize</template
+            >点这缩小</template
           >
         </button>
       </div>
@@ -31,9 +29,9 @@ Contain three feature: drag, resize, maximize.
     </div>
 
     <button type="button" @click="ifShowWindow = true" v-if="!ifShowWindow">
-      display window
+      显示窗口
     </button>
-    <button type="button" @click="ifShowWindow = false" v-else>hide window</button>
+    <button type="button" @click="ifShowWindow = false" v-else>隐藏窗口</button>
   </div>
 </template>
 <script>
@@ -75,7 +73,7 @@ Contain three feature: drag, resize, maximize.
 
 :::
 
-## Javascript Class Library Basic Example
+## 函数方式的基本使用案例
 
 ::: demo
 
@@ -84,17 +82,17 @@ Contain three feature: drag, resize, maximize.
   <div class="container">
     <div class="window window2 window--by-function" v-show="ifShowWindow">
       <div class="window__header">
-        Window Created by Javascript Class Library
+        函数方式生成的窗口
       </div>
       <div class="window__body">
-        <p>window content1</p>
-        <p>window content2</p>
-        <p>window content3</p>
+        <p>窗口内容1</p>
+        <p>窗口内容2</p>
+        <p>窗口内容3</p>
       </div>
     </div>
 
-    <button type="button" @click="show" v-if="!ifShowWindow">display window</button>
-    <button type="button" @click="hide" v-else>hide window</button>
+    <button type="button" @click="show" v-if="!ifShowWindow">显示窗口</button>
+    <button type="button" @click="hide" v-else>隐藏窗口</button>
   </div>
 </template>
 <script>
@@ -143,7 +141,7 @@ Contain three feature: drag, resize, maximize.
 
 :::
 
-## Disable Drag and Enable Part of Resize
+## 停用拖拽移动特性，启用部分方向的调整大小
 
 ::: demo
 
@@ -152,19 +150,19 @@ Contain three feature: drag, resize, maximize.
   <div class="container">
     <div class="window window3" v-show="ifShowWindow" v-window="windowParams">
       <div class="window__header">
-        Window Which Part of Feature Available
+        部分功能可用的窗口
       </div>
       <div class="window__body">
-        <p>window content1</p>
-        <p>window content2</p>
-        <p>window content3</p>
+        <p>窗口内容1</p>
+        <p>窗口内容2</p>
+        <p>窗口内容3</p>
       </div>
     </div>
 
     <button type="button" @click="ifShowWindow = true" v-if="!ifShowWindow">
-      display window
+      显示窗口
     </button>
-    <button type="button" @click="ifShowWindow = false" v-else>hide window</button>
+    <button type="button" @click="ifShowWindow = false" v-else>隐藏窗口</button>
   </div>
 </template>
 <script>
@@ -196,9 +194,9 @@ Contain three feature: drag, resize, maximize.
 
 :::
 
-## Pass Drag Handler Parameter
+## 指定拖拽移动的 handler
 
-In this example，you could move the window only when you drag the Drag Handler(`.window_header`), which is the header of the window.
+这个例子中，只有拖拽`.window_header`，即窗口的头部，才能拖动窗口
 
 ::: demo
 
@@ -207,19 +205,19 @@ In this example，you could move the window only when you drag the Drag Handler(
   <div class="container">
     <div class="window window4" v-show="ifShowWindow" v-window="windowParams">
       <div class="window__header">
-        Window with Drag Handler
+        指定拖拽移动的handler的窗口
       </div>
       <div class="window__body">
-        <p>window content1</p>
-        <p>window content2</p>
-        <p>window content3</p>
+        <p>窗口内容1</p>
+        <p>窗口内容2</p>
+        <p>窗口内容3</p>
       </div>
     </div>
 
     <button type="button" @click="ifShowWindow = true" v-if="!ifShowWindow">
-      display window
+      显示窗口
     </button>
-    <button type="button" @click="ifShowWindow = false" v-else>hide window</button>
+    <button type="button" @click="ifShowWindow = false" v-else>隐藏窗口</button>
   </div>
 </template>
 <script>
