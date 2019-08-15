@@ -124,7 +124,12 @@ const windowParams = {
 enhanceWindow(document.querySelector('.demo-window'), windowParams);
 ```
 
-# Parameters
+## Browser Compatibility
+| IE10 | IE11 | Chrome |
+| :---: | :---: | :---: |
+| OK | OK | OK |
+
+## Parameters
 
 Parameter | Description | Type | Accepted Values | Default 
 ---|---|---|---|---

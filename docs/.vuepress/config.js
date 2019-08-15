@@ -42,14 +42,14 @@ module.exports = {
       '/': {
         selectText: 'Languages',
         label: 'English',
-        sidebar: ['quick-start', 'examples', 'params'],
+        sidebar: ['quick-start', 'browser-compatibility', 'examples', 'params'],
       },
       '/zh-CN/': {
         selectText: 'Languages',
         label: '简体中文',
         /* 侧边栏 */
         sidebar: {
-          '/zh-CN/': ['quick-start', 'examples', 'params'],
+          '/zh-CN/': ['quick-start', 'browser-compatibility', 'examples', 'params'],
         },
       },
     },

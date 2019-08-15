@@ -83,6 +83,11 @@ const windowParams = {
 enhanceWindow(document.querySelector('.demo-window'), windowParams);
 ```
 
+## 浏览器兼容性
+| IE10 | IE11 | Chrome |
+| :---: | :---: | :---: |
+| OK | OK | OK |
+
 ## 参数
 
 参数 | 说明 | 类型 | 可选值 | 默认值 
