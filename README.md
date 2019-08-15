@@ -18,38 +18,40 @@
 
 > Vue.js directive that enhance your Modal Window, support drag, resize and maximize.
 
-### 🏠 [Homepage](https://github.com/Array-Huang/vue-directive-window)
+- [Github](https://github.com/Array-Huang/vue-directive-window)
+- [中文 README](https://github.com/ElemeFE/element/blob/dev/README.zh-CN.md)
+- [中文 Document](https://array-huang.github.io/vue-directive-window/zh-CN/)
 
-## 快速上手
+## Quick Start
 
-> 注意 请确保你的 Node.js 版本 >= 8。 
+> Please make sure your Node.js version >= 8.
 
-## 引入vue-directive-window
-`vue-directive-window`支持静态文件及npm两种方式引入。
+## Installation
+`vue-directive-window` provides two ways of installation, from CDN and from npm.
 
-### 静态文件方式引入
+### CDN
 ```html
 <script src="https://unpkg.com/vue-directive-window/dist/vue-directive-window.umd.min.js"></script>
 ```
 
-### npm方式引入
+### npm
 ```bash
 npm install vue-directive-window
 ```
 
-## 开始使用
-`vue-directive-window`支持Vue自定义指令及一般js类两种方式来使用。
+## Hello World
+`vue-directive-window` provides two ways to use, Vue Custom Directive, and general javascript class library.
 
-### Vue自定义指令
+### Vue Custom Directive
 ```vue
 <template>
   <div v-window="windowParams">
-    <!-- 容器内容 -->
+    <!-- container content -->
   </div>
 </template>
 <script>
 import VueDirectiveWindow from 'vue-directive-window';
-Vue.use(VueDirectiveWindow); // 如果是以静态文件方式引入的话，则不需要 import，直接使用Vue.use(window['vue-directive-window'])
+Vue.use(VueDirectiveWindow); // When you take the CDN way, you don't need to import anything; you may use `Vue.use(window['vue-directive-window'])` instead.
 export default {
   data() {
     return {
@@ -63,15 +65,15 @@ export default {
 </script>
 ```
 
-### 一般js类
+### Javascript Class Library
 ```html
 <div class="demo-window" v-window="windowParams">
-  <!-- 容器内容 -->
+  <!-- container content -->
 </div>
 ```
 
 ```javascript
-import { enhanceWindow } from 'vue-directive-window'; // 如果是以静态文件方式引入的话,则是const enhanceWindow = window['vue-directive-window'].enhanceWindow;
+import { enhanceWindow } from 'vue-directive-window'; // When you take the CDN way, you may use `const enhanceWindow = window['vue-directive-window'].enhanceWindow;` instead.
 
 const windowParams = {
   movable: false
@@ -81,19 +83,49 @@ const windowParams = {
 enhanceWindow(document.querySelector('.demo-window'), windowParams);
 ```
 
-## 参数
+### Vue Custom Directive
+```vue
+<template>
+  <div v-window="windowParams">
+    <!-- container content -->
+  </div>
+</template>
+<script>
+import VueDirectiveWindow from 'vue-directive-window';
+Vue.use(VueDirectiveWindow); // When you take the CDN way, you don't need to import anything; you may use `Vue.use(window['vue-directive-window'])` instead.
+export default {
+  data() {
+    return {
+      windowParams: {
+        movable: false,
+        resizable: ['left', 'left-top'],
+      },
+    };
+  },
+}
+</script>
+```
 
-参数 | 说明 | 类型 | 可选值 | 默认值 
----|---|---|---|---
-minWidth | 窗口可被调整至的最小宽度(px) | Number | —— | 100
-maxWidth | 窗口可被调整至的最大宽度(px) | Number | —— | ——
-minHeight | 窗口可被调整至的最小高度(px) | Number | —— | 100
-maxHeight | 窗口可被调整至的最大高度(px) | Number | —— | ——
-movable | 是否开启拖拽移动功能 | Boolean | —— | true
-resizable | 是否开启调整窗口尺寸的功能。参数为`true`表示八个方向均可调整窗口尺寸；但如果传入的是字符串数组，如`['left', 'left-top']`，则只有参数指定的方向可以调整窗口尺寸；各个方向的标识如“可选值”列里所示。 | Boolean / Array | `left-top`/`left-bottom`/`left`/`right-top`/`right-bottom`/`right`/`top`/`bottom` | true
-customMoveHandler | 自定义的拖拽移动handler。如果传入字符串类型参数，系统则将采用`document.querySelector(customMoveHandler)`来获取handler。 | String / Element | —— | ——
-customMaximizeHandler | 自定义的最大化handler。如果传入字符串类型参数，系统则将采用`document.querySelector(customMoveHandler)`来获取handler。 | String / Element | —— | ——
-maximizeCallback | 窗口最大化的回调函数。回调参数为：当前是否最大化(Boolean) | Function | —— | ——
+### Javascript Class Library
+```html
+<div class="demo-window" v-window="windowParams">
+  <!-- container content -->
+</div>
+```
+
+```javascript
+import { enhanceWindow } from 'vue-directive-window'; // When you take the CDN way, you may use `const enhanceWindow = window['vue-directive-window'].enhanceWindow;` instead.
+
+const windowParams = {
+  movable: false
+  resizable: ['left', 'left-top']
+};
+
+enhanceWindow(document.querySelector('.demo-window'), windowParams);
+```
+
+## Ready for More?
+At this point, you already install `vue-directive-window` and create a Hello World case. If you are interested in `vue-directive-window` and want to know more about it, you may refer to chapter [examples](/examples.md) and [params](/params.md).
 
 ## Author
 
@@ -101,9 +133,7 @@ maximizeCallback | 窗口最大化的回调函数。回调参数为：当前是�
 
 - Github: [@Array-Huang](https://github.com/Array-Huang)
 
-## Show your support
-
-Give a ⭐️ if this project helped you!
+## Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
