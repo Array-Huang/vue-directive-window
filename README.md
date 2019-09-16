@@ -83,47 +83,6 @@ const windowParams = {
 enhanceWindow(document.querySelector('.demo-window'), windowParams);
 ```
 
-### Vue Custom Directive
-```vue
-<template>
-  <div v-window="windowParams">
-    <!-- container content -->
-  </div>
-</template>
-<script>
-import VueDirectiveWindow from 'vue-directive-window';
-Vue.use(VueDirectiveWindow); // When you take the CDN way, you don't need to import anything; you may use `Vue.use(window['vue-directive-window'])` instead.
-export default {
-  data() {
-    return {
-      windowParams: {
-        movable: false,
-        resizable: ['left', 'left-top'],
-      },
-    };
-  },
-}
-</script>
-```
-
-### Javascript Class Library
-```html
-<div class="demo-window" v-window="windowParams">
-  <!-- container content -->
-</div>
-```
-
-```javascript
-import { enhanceWindow } from 'vue-directive-window'; // When you take the CDN way, you may use `const enhanceWindow = window['vue-directive-window'].enhanceWindow;` instead.
-
-const windowParams = {
-  movable: false
-  resizable: ['left', 'left-top']
-};
-
-enhanceWindow(document.querySelector('.demo-window'), windowParams);
-```
-
 ## Browser Compatibility
 | IE10 | IE11 | Chrome |
 | :---: | :---: | :---: |
