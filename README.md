@@ -24,10 +24,10 @@
 
 ## Quick Start
 
-> Please make sure your Node.js version >= 8.
+> `vue-directive-window` requires your Node.js version >= 8.
 
 ## Installation
-`vue-directive-window` provides two ways of installation, from CDN and from npm.
+There are two ways of installation, from CDN and from npm, you can choose which you like.
 
 ### CDN
 ```html
@@ -40,7 +40,9 @@ npm install vue-directive-window
 ```
 
 ## Hello World
-`vue-directive-window` provides two ways to use, Vue Custom Directive, and general javascript class library.
+`vue-directive-window` provides two ways to use:
+- Vue Custom Directive
+- general javascript class library
 
 ### Vue Custom Directive
 ```vue
