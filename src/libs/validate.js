@@ -34,7 +34,7 @@ const RULES = {
     type: Function,
   },
 };
-export function validate(customParams) {
+export function validate(customParams = {}) {
   const schema = new Schema(RULES);
   const errors = schema.validate(customParams);
   if (errors.length === 0) {
