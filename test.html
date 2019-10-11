@@ -53,12 +53,13 @@
       function enhanceWindow() {
         var windowElement = document.querySelector('.window--by-function');
         var windowParams = {
+          windowEl: windowElement,
           minWidth: 10,
           minHeight: 100,
           // customMoveHandler: '.window__header',
         };
         window['vue-directive-window'].enhanceWindow(
-          windowElement,
+          null,
           windowParams
         );
       }

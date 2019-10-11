@@ -1,5 +1,8 @@
 import Schema from 'validate';
 const RULES = {
+  windowEl: {
+    required: false,
+  },
   minWidth: {
     type: Number,
     size: { min: 1 },
