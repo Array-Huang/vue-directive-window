@@ -1,6 +1,7 @@
 import Schema from 'validate';
 const RULES = {
-  windowEl: {
+  windowSelector: {
+    type: String,
     required: false,
   },
   minWidth: {

@@ -51,15 +51,14 @@
     </div>
     <script>
       function enhanceWindow() {
-        var windowElement = document.querySelector('.window--by-function');
         var windowParams = {
-          windowEl: windowElement,
+          windowSelector: '.window--by-function',
           minWidth: 10,
           minHeight: 100,
           // customMoveHandler: '.window__header',
         };
         window['vue-directive-window'].enhanceWindow(
-          null,
+          document.body,
           windowParams
         );
       }

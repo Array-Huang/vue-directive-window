@@ -48,7 +48,9 @@ function isMoveHandlerEqualWindow(window, moveHandler) {
 
 export function eventBinding(el, customParams) {
   const finalParams = _prepareParams(customParams);
-  el = finalParams.windowEl ? finalParams.windowEl : el;
+  el = finalParams.windowSelector
+    ? el.querySelector(finalParams.windowSelector)
+    : el;
   const moveHandler = getMoveHandler(finalParams, el);
   const maximizeHandler = getMaximizeHandler(finalParams, el);
   const instance = {
