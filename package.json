@@ -36,25 +36,27 @@
     "docs:deploy": "sh script/deploy.sh"
   },
   "dependencies": {
-    "core-js": "^2.6.9",
+    "core-js": "^2.6.10",
     "current-script-polyfill": "^1.0.0",
+    "micro-schema-validator": "^0.1.2",
     "validate": "^4.5.1",
     "vue": "^2.6.10",
     "vue-router": "^3.0.7",
     "vuex": "^3.1.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.9.2",
-    "@vue/cli-plugin-eslint": "^3.9.2",
-    "@vue/cli-service": "^3.9.2",
+    "@vue/cli-plugin-babel": "^3.12.1",
+    "@vue/cli-plugin-eslint": "^3.12.1",
+    "@vue/cli-service": "^3.12.1",
     "@vue/eslint-config-prettier": "^4.0.1",
     "babel-eslint": "^10.0.2",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.3",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
+    "shelljs": "^0.8.3",
     "vue-template-compiler": "^2.6.10",
-    "vuepress": "^1.0.2",
+    "vuepress": "^1.2.0",
     "vuepress-plugin-demo-block": "^0.7.2"
   }
 }

@@ -4,7 +4,7 @@
  * (c) 2019 Array-Huang
  * Released under the MIT License.
  * Github: https://github.com/Array-Huang/vue-directive-window
- * hash: fe6e12b556ea3c464769
+ * hash: 6e90c68164bbf5b033e4
  * 
  */
 module.exports =
@@ -252,505 +252,6 @@ module.exports = function () {
 
 /***/ }),
 
-/***/ "0d12":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _error2 = __webpack_require__("d44f");
-
-var _error3 = _interopRequireDefault(_error2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * A property instance gets returned whenever you call `schema.path()`.
- * Properties are also created internally when an object is passed to the Schema constructor.
- *
- * @param {String} name - the name of the property
- * @param {Schema} schema - parent schema
- */
-
-var Property = function () {
-  function Property(name, schema) {
-    _classCallCheck(this, Property);
-
-    this.name = name;
-    this.registry = {};
-    this._schema = schema;
-    this._type = null;
-    this.messages = {};
-  }
-
-  /**
-   * Registers messages.
-   *
-   * @example
-   * prop.message('something is wrong')
-   * prop.message({ required: 'thing is required.' })
-   *
-   * @param {Object|String} messages
-   * @return {Property}
-   */
-
-  _createClass(Property, [{
-    key: 'message',
-    value: function message(messages) {
-      if (typeof messages == 'string') {
-        messages = { default: messages };
-      }
-
-      var entries = Object.entries(messages);
-
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = entries[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var _ref = _step.value;
-
-          var _ref2 = _slicedToArray(_ref, 2);
-
-          var key = _ref2[0];
-          var val = _ref2[1];
-
-          this.messages[key] = val;
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      return this;
-    }
-
-    /**
-     * Mount given `schema` on current path.
-     *
-     * @example
-     * const user = new Schema({ email: String })
-     * prop.schema(user)
-     *
-     * @param {Schema} schema - the schema to mount
-     * @return {Property}
-     */
-
-  }, {
-    key: 'schema',
-    value: function schema(_schema) {
-      this._schema.path(this.name, _schema);
-      return this;
-    }
-
-    /**
-     * Validate using named functions from the given object.
-     * Error messages can be defined by providing an object with
-     * named error messages/generators to `schema.message()`
-     *
-     * The message generator receives the value being validated,
-     * the object it belongs to and any additional arguments.
-     *
-     * @example
-     * const schema = new Schema()
-     * const prop = schema.path('some.path')
-     *
-     * schema.message({
-     *   binary: (path, ctx) => `${path} must be binary.`,
-     *   bits: (path, ctx, bits) => `${path} must be ${bits}-bit`
-     * })
-     *
-     * prop.use({
-     *   binary: (val, ctx) => /^[01]+$/i.test(val),
-     *   bits: [(val, ctx, bits) => val.length == bits, 32]
-     * })
-     *
-     * @param {Object} fns - object with named validation functions to call
-     * @return {Property}
-     */
-
-  }, {
-    key: 'use',
-    value: function use(fns) {
-      var _this = this;
-
-      Object.keys(fns).forEach(function (name) {
-        var arr = fns[name];
-        if (!Array.isArray(arr)) arr = [arr];
-        var fn = arr.shift();
-        _this._register(name, arr, fn);
-      });
-
-      return this;
-    }
-
-    /**
-     * Registers a validator that checks for presence.
-     *
-     * @example
-     * prop.required()
-     *
-     * @param {Boolean} [bool] - `true` if required, `false` otherwise
-     * @return {Property}
-     */
-
-  }, {
-    key: 'required',
-    value: function required() {
-      var bool = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
-
-      return this._register('required', [bool]);
-    }
-
-    /**
-     * Registers a validator that checks if a value is of a given `type`
-     *
-     * @example
-     * prop.type(String)
-     *
-     * @example
-     * prop.type('string')
-     *
-     * @param {String|Function} type - type to check for
-     * @return {Property}
-     */
-
-  }, {
-    key: 'type',
-    value: function type(_type) {
-      this._type = _type;
-      return this._register('type', [_type]);
-    }
-
-    /**
-     * Registers a validator that checks length.
-     *
-     * @example
-     * prop.length({ min: 8, max: 255 })
-     * prop.length(10)
-     *
-     * @param {Object|Number} rules - object with `.min` and `.max` properties or a number
-     * @param {Number} rules.min - minimum length
-     * @param {Number} rules.max - maximum length
-     * @return {Property}
-     */
-
-  }, {
-    key: 'length',
-    value: function length(rules) {
-      return this._register('length', [rules]);
-    }
-
-    /**
-     * Registers a validator that checks size.
-     *
-     * @example
-     * prop.size({ min: 8, max: 255 })
-     * prop.size(10)
-     *
-     * @param {Object|Number} rules - object with `.min` and `.max` properties or a number
-     * @param {Number} rules.min - minimum size
-     * @param {Number} rules.max - maximum size
-     * @return {Property}
-     */
-
-  }, {
-    key: 'size',
-    value: function size(rules) {
-      return this._register('size', [rules]);
-    }
-
-    /**
-     * Registers a validator for enums.
-     *
-     * @example
-     * prop.enum(['cat', 'dog'])
-     *
-     * @param {Array} rules - allowed values
-     * @return {Property}
-     */
-
-  }, {
-    key: 'enum',
-    value: function _enum(enums) {
-      return this._register('enum', [enums]);
-    }
-
-    /**
-     * Registers a validator that checks if a value matches given `regexp`.
-     *
-     * @example
-     * prop.match(/some\sregular\sexpression/)
-     *
-     * @param {RegExp} regexp - regular expression to match
-     * @return {Property}
-     */
-
-  }, {
-    key: 'match',
-    value: function match(regexp) {
-      return this._register('match', [regexp]);
-    }
-
-    /**
-     * Registers a validator that checks each value in an array against given `rules`.
-     *
-     * @example
-     * prop.each({ type: String })
-     * prop.each([{ type: Number }])
-     * prop.each({ things: [{ type: String }]})
-     * prop.each(schema)
-     *
-     * @param {Array|Object|Schema|Property} rules - rules to use
-     * @return {Property}
-     */
-
-  }, {
-    key: 'each',
-    value: function each(rules) {
-      this._schema.path(this.name + '.$', rules);
-      return this;
-    }
-
-    /**
-     * Registers paths for array elements on the parent schema, with given array of rules.
-     *
-     * @example
-     * prop.elements([{ type: String }, { type: Number }])
-     *
-     * @param {Array} arr - array of rules to use
-     * @return {Property}
-     */
-
-  }, {
-    key: 'elements',
-    value: function elements(arr) {
-      var _this2 = this;
-
-      arr.forEach(function (rules, i) {
-        _this2._schema.path(_this2.name + '.' + i, rules);
-      });
-      return this;
-    }
-
-    /**
-     * Proxy method for schema path. Makes chaining properties together easier.
-     *
-     * @example
-     * schema
-     *   .path('name').type(String).required()
-     *   .path('email').type(String).required()
-     *
-     */
-
-  }, {
-    key: 'path',
-    value: function path() {
-      var _schema2;
-
-      return (_schema2 = this._schema).path.apply(_schema2, arguments);
-    }
-
-    /**
-     * Typecast given `value`
-     *
-     * @example
-     * prop.type(String)
-     * prop.typecast(123) // => '123'
-     *
-     * @param {Mixed} value - value to typecast
-     * @return {Mixed}
-     */
-
-  }, {
-    key: 'typecast',
-    value: function typecast(value) {
-      var schema = this._schema;
-      var type = this._type;
-
-      if (!type) return value;
-
-      if (typeof type == 'function') {
-        type = type.name;
-      }
-
-      var cast = schema.typecasters[type] || schema.typecasters[type.toLowerCase()];
-
-      if (typeof cast != 'function') {
-        throw new Error('Typecasting failed: No typecaster defined for ' + type + '.');
-      }
-
-      return cast(value);
-    }
-
-    /**
-     * Validate given `value`
-     *
-     * @example
-     * prop.type(Number)
-     * assert(prop.validate(2) == null)
-     * assert(prop.validate('hello world') instanceof Error)
-     *
-     * @param {Mixed} value - value to validate
-     * @param {Object} ctx - the object containing the value
-     * @param {String} [path] - path of the value being validated
-     * @return {ValidationError}
-     */
-
-  }, {
-    key: 'validate',
-    value: function validate(value, ctx) {
-      var path = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : this.name;
-
-      var types = Object.keys(this.registry);
-      var done = {};
-      var err = void 0;
-
-      // Required first
-      err = this._run('required', value, ctx, path);
-      if (err) return err;
-
-      // No need to continue if value is null-ish
-      if (value == null) return null;
-
-      // Run type second
-      err = this._run('type', value, ctx, path);
-      if (err) return err;
-
-      // Make sure required and run are not executed again
-      done.required = true;
-      done.type = true;
-
-      // Run the rest
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = types[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var type = _step2.value;
-
-          if (done[type]) continue;
-          err = this._run(type, value, ctx, path);
-          if (err) return err;
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      return null;
-    }
-
-    /**
-     * Run validator of given `type`
-     *
-     * @param {String} type - type of validator
-     * @param {Mixed} value - value to validate
-     * @param {Object} ctx - the object containing the value
-     * @param {String} path - path of the value being validated
-     * @return {ValidationError}
-     * @private
-     */
-
-  }, {
-    key: '_run',
-    value: function _run(type, value, ctx, path) {
-      if (!this.registry[type]) return;
-      var schema = this._schema;
-      var _registry$type = this.registry[type],
-          args = _registry$type.args,
-          fn = _registry$type.fn;
-
-      var validator = fn || schema.validators[type];
-      var valid = validator.apply(undefined, [value, ctx].concat(_toConsumableArray(args), [path]));
-      if (!valid) return this._error(type, ctx, args, path);
-    }
-
-    /**
-     * Register validator
-     *
-     * @param {String} type - type of validator
-     * @param {Array} args - argument to pass to validator
-     * @param {Function} [fn] - custom validation function to call
-     * @return {Property}
-     * @private
-     */
-
-  }, {
-    key: '_register',
-    value: function _register(type, args, fn) {
-      this.registry[type] = { args: args, fn: fn };
-      return this;
-    }
-
-    /**
-     * Create an error
-     *
-     * @param {String} type - type of validator
-     * @param {Object} ctx - the object containing the value
-     * @param {Array} args - arguments to pass
-     * @param {String} path - path of the value being validated
-     * @return {ValidationError}
-     * @private
-     */
-
-  }, {
-    key: '_error',
-    value: function _error(type, ctx, args, path) {
-      var schema = this._schema;
-
-      var message = this.messages[type] || this.messages.default || schema.messages[type] || schema.messages.default;
-
-      if (typeof message == 'function') {
-        message = message.apply(undefined, [path, ctx].concat(_toConsumableArray(args)));
-      }
-
-      return new _error3.default(message, path);
-    }
-  }]);
-
-  return Property;
-}();
-
-exports.default = Property;
-module.exports = exports.default;
-
-/***/ }),
-
 /***/ "0d58":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -817,143 +318,6 @@ module.exports = __webpack_require__("9e1e") ? Object.defineProperties : functio
   return O;
 };
 
-
-/***/ }),
-
-/***/ "212e":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _componentType = __webpack_require__("b3b1");
-
-var _componentType2 = _interopRequireDefault(_componentType);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Default validators.
- *
- * @private
- */
-
-var Validators = {
-  /**
-   * Validates presence.
-   *
-   * @param {Mixed} value - the value being validated
-   * @param {Object} ctx - the object being validated
-   * @param {Bolean} required
-   * @return {Boolean}
-   */
-
-  required: function required(value, ctx, _required) {
-    if (_required === false) return true;
-    return value != null && value !== '';
-  },
-
-
-  /**
-   * Validates type.
-   *
-   * @param {Mixed} value - the value being validated
-   * @param {Object} ctx - the object being validated
-   * @param {String|Function} name name of the type or a constructor
-   * @return {Boolean}
-   */
-
-  type: function type(value, ctx, name) {
-    if (typeof name == 'function') {
-      return value.constructor === name;
-    }
-
-    return (0, _componentType2.default)(value) === name;
-  },
-
-
-  /**
-   * Validates length.
-   *
-   * @param {String} value the string being validated
-   * @param {Object} ctx the object being validated
-   * @param {Object|Number} rules object with .min and/or .max props or a number
-   * @param {Number} [rules.min] - minimum length
-   * @param {Number} [rules.max] - maximum length
-   * @return {Boolean}
-   */
-
-  length: function length(value, ctx, len) {
-    if (typeof len == 'number') {
-      return value.length === len;
-    }
-    var min = len.min,
-        max = len.max;
-
-    if (min && value.length < min) return false;
-    if (max && value.length > max) return false;
-    return true;
-  },
-
-
-  /**
-   * Validates size.
-   *
-   * @param {Number} value the number being validated
-   * @param {Object} ctx the object being validated
-   * @param {Object|Number} size object with .min and/or .max props or a number
-   * @param {String|Number} [size.min] - minimum size
-   * @param {String|Number} [size.max] - maximum size
-   * @return {Boolean}
-   */
-
-  size: function size(value, ctx, _size) {
-    if (typeof _size == 'number') {
-      return value === _size;
-    }
-    var min = _size.min,
-        max = _size.max;
-
-    if (parseInt(min) != null && value < min) return false;
-    if (parseInt(max) != null && value > max) return false;
-    return true;
-  },
-
-
-  /**
-   * Validates enums.
-   *
-   * @param {String} value the string being validated
-   * @param {Object} ctx the object being validated
-   * @param {Array} enums array with allowed values
-   * @return {Boolean}
-   */
-
-  enum: function _enum(value, ctx, enums) {
-    return enums.includes(value);
-  },
-
-
-  /**
-   * Validates against given `regexp`.
-   *
-   * @param {String} value the string beign validated
-   * @param {Object} ctx the object being validated
-   * @param {RegExp} regexp the regexp to validate against
-   * @return {Boolean}
-   */
-
-  match: function match(value, ctx, regexp) {
-    return regexp.test(value);
-  }
-};
-
-exports.default = Validators;
-module.exports = exports.default;
 
 /***/ }),
 
@@ -1237,107 +601,6 @@ module.exports = function (it) {
 
 /***/ }),
 
-/***/ "3045":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-/**
- * Default error messages.
- *
- * @private
- */
-
-var Messages = {
-  // Type message
-  type: function type(prop, ctx, _type) {
-    if (typeof _type == 'function') {
-      _type = _type.name;
-    }
-
-    return prop + ' must be of type ' + _type + '.';
-  },
-
-
-  // Required message
-  required: function required(prop) {
-    return prop + ' is required.';
-  },
-
-
-  // Match message
-  match: function match(prop, ctx, regexp) {
-    return prop + ' must match ' + regexp + '.';
-  },
-
-
-  // Length message
-  length: function length(prop, ctx, len) {
-    if (typeof len == 'number') {
-      return prop + ' must have a length of ' + len + '.';
-    }
-
-    var min = len.min,
-        max = len.max;
-
-
-    if (min && max) {
-      return prop + ' must have a length between ' + min + ' and ' + max + '.';
-    }
-    if (max) {
-      return prop + ' must have a maximum length of ' + max + '.';
-    }
-    if (min) {
-      return prop + ' must have a minimum length of ' + min + '.';
-    }
-  },
-
-
-  // Size message
-  size: function size(prop, ctx, _size) {
-    if (typeof _size == 'number') {
-      return prop + ' must have a size of ' + _size + '.';
-    }
-
-    var min = _size.min,
-        max = _size.max;
-
-
-    if (min && max) {
-      return prop + ' must be between ' + min + ' and ' + max + '.';
-    }
-    if (max) {
-      return prop + ' must be less than ' + max + '.';
-    }
-    if (min) {
-      return prop + ' must be greater than ' + min + '.';
-    }
-  },
-
-
-  // Enum message
-  enum: function _enum(prop, ctx, enums) {
-    var copy = enums.slice();
-    var last = copy.pop();
-    return prop + ' must be either ' + copy.join(', ') + ' or ' + last + '.';
-  },
-
-
-  // Default message
-  default: function _default(prop) {
-    return 'Validation failed for ' + prop + '.';
-  }
-};
-
-exports.default = Messages;
-module.exports = exports.default;
-
-/***/ }),
-
 /***/ "32e9":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1572,93 +835,6 @@ module.exports = patchedExec;
 
 /***/ }),
 
-/***/ "522b":
-/***/ (function(module, exports) {
-
-module.exports = typecast;
-
-/**
- * Cast given `val` to `type`
- *
- * @param {Mixed} val
- * @param {String} type
- * @api public
- */
-
-function typecast (val, type) {
-  var fn = typecast[type];
-  if (typeof fn != 'function') throw new Error('cannot cast to ' + type);
-  return fn(val);
-}
-
-/**
- * Cast `val` to `String`
- *
- * @param {Mixed} val
- * @api public
- */
-
-typecast.string = function (val) {
-  return val.toString();
-};
-
-/**
- * Cast `val` to `Number`
- *
- * @param {Mixed} val
- * @api public
- */
-
-typecast.number = function (val) {
-  var num = parseFloat(val);
-  return isNaN(num)
-    ? null
-    : num;
-};
-
-/**
- * Cast `val` to a`Date`
- *
- * @param {Mixed} val
- * @api public
- */
-
-typecast.date = function (val) {
-  var date = new Date(val);
-  return isNaN(date.valueOf())
-    ? null
-    : date;
-};
-
-/**
- * Cast `val` to `Array`
- *
- * @param {Mixed} val
- * @api public
- */
-
-typecast.array = function (val) {
-  if (val instanceof Array) return val;
-  var arr = val.toString().split(',');
-  for (var i = 0; i < arr.length; i++) {
-    arr[i] = arr[i].trim();
-  }
-  return arr;
-};
-
-/**
- * Cast `val` to `Boolean`
- *
- * @param {Mixed} val
- * @api public
- */
-
-typecast.boolean = function (val) {
-  return !! val && val !== 'false';
-};
-
-/***/ }),
-
 /***/ "52a7":
 /***/ (function(module, exports) {
 
@@ -1732,556 +908,6 @@ $export.W = 32;  // wrap
 $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library`
 module.exports = $export;
-
-
-/***/ }),
-
-/***/ "5d8f":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _componentType = __webpack_require__("b3b1");
-
-var _componentType2 = _interopRequireDefault(_componentType);
-
-var _eivindfjeldstadDot = __webpack_require__("b258");
-
-var _eivindfjeldstadDot2 = _interopRequireDefault(_eivindfjeldstadDot);
-
-var _typecast = __webpack_require__("522b");
-
-var _typecast2 = _interopRequireDefault(_typecast);
-
-var _property = __webpack_require__("0d12");
-
-var _property2 = _interopRequireDefault(_property);
-
-var _messages = __webpack_require__("3045");
-
-var _messages2 = _interopRequireDefault(_messages);
-
-var _validators = __webpack_require__("212e");
-
-var _validators2 = _interopRequireDefault(_validators);
-
-var _error = __webpack_require__("d44f");
-
-var _error2 = _interopRequireDefault(_error);
-
-var _utils = __webpack_require__("71fe");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * A Schema defines the structure that objects should be validated against.
- *
- * @example
- * const post = new Schema({
- *   title: {
- *     type: String,
- *     required: true,
- *     length: { min: 1, max: 255 }
- *   },
- *   content: {
- *     type: String,
- *     required: true
- *   },
- *   published: {
- *     type: Date,
- *     required: true
- *   },
- *   keywords: [{ type: String }]
- * })
- *
- * @example
- * const author = new Schema({
- *   name: {
- *     type: String,
- *     required: true
- *   },
- *   email: {
- *     type: String,
- *     required: true
- *   },
- *   posts: [post]
- * })
- *
- * @param {Object} [obj] - schema definition
- * @param {Object} [opts] - options
- * @param {Boolean} [opts.typecast=false] - typecast values before validation
- * @param {Boolean} [opts.strip=true] - strip properties not defined in the schema
- */
-
-var Schema = function () {
-  function Schema() {
-    var _this = this;
-
-    var obj = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-    _classCallCheck(this, Schema);
-
-    this.opts = opts;
-    this.hooks = [];
-    this.props = {};
-    this.messages = Object.assign({}, _messages2.default);
-    this.validators = Object.assign({}, _validators2.default);
-    this.typecasters = Object.assign({}, _typecast2.default);
-    Object.keys(obj).forEach(function (k) {
-      return _this.path(k, obj[k]);
-    });
-  }
-
-  /**
-   * Create or update `path` with given `rules`.
-   *
-   * @example
-   * const schema = new Schema()
-   * schema.path('name.first', { type: String })
-   * schema.path('name.last').type(String).required()
-   *
-   * @param {String} path - full path using dot-notation
-   * @param {Object|Array|String|Schema|Property} [rules] - rules to apply
-   * @return {Property}
-   */
-
-  _createClass(Schema, [{
-    key: 'path',
-    value: function path(_path, rules) {
-      var _this2 = this;
-
-      var parts = _path.split('.');
-      var suffix = parts.pop();
-      var prefix = parts.join('.');
-
-      // Make sure full path is created
-      if (prefix) {
-        this.path(prefix);
-      }
-
-      // Array index placeholder
-      if (suffix === '$') {
-        this.path(prefix).type(Array);
-      }
-
-      // Nested schema
-      if (rules instanceof Schema) {
-        rules.hook(function (k, v) {
-          return _this2.path((0, _utils.join)(k, _path), v);
-        });
-        return this.path(_path, rules.props);
-      }
-
-      // Return early when given a `Property`
-      if (rules instanceof _property2.default) {
-        this.props[_path] = rules;
-        // Notify parents if mounted
-        this.propagate(_path, rules);
-        return rules;
-      }
-
-      var prop = this.props[_path] || new _property2.default(_path, this);
-
-      this.props[_path] = prop;
-      // Notify parents if mounted
-      this.propagate(_path, prop);
-
-      // No rules?
-      if (!rules) return prop;
-
-      // type shorthand
-      // `{ name: String }`
-      if (typeof rules == 'string' || typeof rules == 'function') {
-        prop.type(rules);
-        return prop;
-      }
-
-      // Allow arrays to be passed implicitly:
-      // `{ keywords: [String] }`
-      // `{ keyVal: [[String, Number]] }`
-      if (Array.isArray(rules)) {
-        prop.type(Array);
-
-        if (rules.length == 1) {
-          prop.each(rules[0]);
-        } else {
-          prop.elements(rules);
-        }
-
-        return prop;
-      }
-
-      var nested = false;
-
-      // Check for nested objects
-      for (var key in rules) {
-        if (!rules.hasOwnProperty(key)) continue;
-        if (typeof prop[key] == 'function') continue;
-        nested = true;
-        break;
-      }
-
-      Object.keys(rules).forEach(function (key) {
-        var rule = rules[key];
-
-        if (nested) {
-          return _this2.path((0, _utils.join)(key, _path), rule);
-        }
-
-        prop[key](rule);
-      });
-
-      return prop;
-    }
-
-    /**
-     * Typecast given `obj`.
-     *
-     * @param {Object} obj - the object to typecast
-     * @return {Schema}
-     * @private
-     */
-
-  }, {
-    key: 'typecast',
-    value: function typecast(obj) {
-      var _loop = function _loop(path, prop) {
-        (0, _utils.walk)(path, obj, function (key, value) {
-          if (value == null) return;
-          var cast = prop.typecast(value);
-          if (cast === value) return;
-          _eivindfjeldstadDot2.default.set(obj, key, cast);
-        });
-      };
-
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = Object.entries(this.props)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var _ref = _step.value;
-
-          var _ref2 = _slicedToArray(_ref, 2);
-
-          var path = _ref2[0];
-          var prop = _ref2[1];
-
-          _loop(path, prop);
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      return this;
-    }
-
-    /**
-     * Strip all keys not defined in the schema
-     *
-     * @param {Object} obj - the object to strip
-     * @param {String} [prefix]
-     * @return {Schema}
-     * @private
-     */
-
-  }, {
-    key: 'strip',
-    value: function strip(obj, prefix) {
-      var _this3 = this;
-
-      var type = (0, _componentType2.default)(obj);
-
-      if (type === 'array') {
-        obj.forEach(function (v, i) {
-          return _this3.strip(v, (0, _utils.join)('$', prefix));
-        });
-        return this;
-      }
-
-      if (type !== 'object') {
-        return this;
-      }
-
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = Object.entries(obj)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var _ref3 = _step2.value;
-
-          var _ref4 = _slicedToArray(_ref3, 2);
-
-          var key = _ref4[0];
-          var val = _ref4[1];
-
-          var path = (0, _utils.join)(key, prefix);
-
-          if (!this.props[path]) {
-            delete obj[key];
-            continue;
-          }
-
-          this.strip(val, path);
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      return this;
-    }
-
-    /**
-     * Validate given `obj`.
-     *
-     * @example
-     * const schema = new Schema({ name: { required: true }})
-     * const errors = schema.validate({})
-     * assert(errors.length == 1)
-     * assert(errors[0].message == 'name is required')
-     * assert(errors[0].path == 'name')
-     *
-     * @param {Object} obj - the object to validate
-     * @param {Object} [opts] - options, see [Schema](#schema-1)
-     * @return {Array}
-     */
-
-  }, {
-    key: 'validate',
-    value: function validate(obj) {
-      var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      opts = Object.assign(this.opts, opts);
-
-      var errors = [];
-
-      if (opts.typecast) {
-        this.typecast(obj);
-      }
-
-      if (opts.strip !== false) {
-        this.strip(obj);
-      }
-
-      var _loop2 = function _loop2(path, prop) {
-        (0, _utils.walk)(path, obj, function (key, value) {
-          var err = prop.validate(value, obj, key);
-          if (err) errors.push(err);
-        });
-      };
-
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = Object.entries(this.props)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var _ref5 = _step3.value;
-
-          var _ref6 = _slicedToArray(_ref5, 2);
-
-          var path = _ref6[0];
-          var prop = _ref6[1];
-
-          _loop2(path, prop);
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-
-      return errors;
-    }
-
-    /**
-     * Assert that given `obj` is valid.
-     *
-     * @example
-     * const schema = new Schema({ name: String })
-     * schema.assert({ name: 1 }) // Throws an error
-     *
-     * @param {Object} obj
-     * @param {Object} [opts]
-     */
-
-  }, {
-    key: 'assert',
-    value: function assert(obj, opts) {
-      var _validate = this.validate(obj, opts),
-          _validate2 = _slicedToArray(_validate, 1),
-          err = _validate2[0];
-
-      if (err) throw err;
-    }
-
-    /**
-     * Override default error messages.
-     *
-     * @example
-     * const hex = (val) => /^0x[0-9a-f]+$/.test(val)
-     * schema.path('some.path').use({ hex })
-     * schema.message('hex', path => `${path} must be hexadecimal`)
-     *
-     * @example
-     * schema.message({ hex: path => `${path} must be hexadecimal` })
-     *
-     * @param {String|Object} name - name of the validator or an object with name-message pairs
-     * @param {String|Function} [message] - the message or message generator to use
-     * @return {Schema}
-     */
-
-  }, {
-    key: 'message',
-    value: function message(name, _message) {
-      (0, _utils.assign)(name, _message, this.messages);
-      return this;
-    }
-
-    /**
-     * Override default validators.
-     *
-     * @example
-     * schema.validator('required', val => val != null)
-     *
-     * @example
-     * schema.validator({ required: val => val != null })
-     *
-     * @param {String|Object} name - name of the validator or an object with name-function pairs
-     * @param {Function} [fn] - the function to use
-     * @return {Schema}
-     */
-
-  }, {
-    key: 'validator',
-    value: function validator(name, fn) {
-      (0, _utils.assign)(name, fn, this.validators);
-      return this;
-    }
-
-    /**
-     * Override default typecasters.
-     *
-     * @example
-     * schema.typecaster('SomeClass', val => new SomeClass(val))
-     *
-     * @example
-     * schema.typecaster({ SomeClass: val => new SomeClass(val) })
-     *
-     * @param {String|Object} name - name of the validator or an object with name-function pairs
-     * @param {Function} [fn] - the function to use
-     * @return {Schema}
-     */
-
-  }, {
-    key: 'typecaster',
-    value: function typecaster(name, fn) {
-      (0, _utils.assign)(name, fn, this.typecasters);
-      return this;
-    }
-
-    /**
-     * Accepts a function that is called whenever new props are added.
-     *
-     * @param {Function} fn - the function to call
-     * @return {Schema}
-     * @private
-     */
-
-  }, {
-    key: 'hook',
-    value: function hook(fn) {
-      this.hooks.push(fn);
-      return this;
-    }
-
-    /**
-     * Notify all subscribers that a property has been added.
-     *
-     * @param {String} path - the path of the property
-     * @param {Property} prop - the new property
-     * @return {Schema}
-     * @private
-     */
-
-  }, {
-    key: 'propagate',
-    value: function propagate(path, prop) {
-      this.hooks.forEach(function (fn) {
-        return fn(path, prop);
-      });
-      return this;
-    }
-  }]);
-
-  return Schema;
-}();
-
-// Export ValidationError
-
-
-exports.default = Schema;
-Schema.ValidationError = _error2.default;
-module.exports = exports.default;
-
-/***/ }),
-
-/***/ "5dbc":
-/***/ (function(module, exports, __webpack_require__) {
-
-var isObject = __webpack_require__("d3f4");
-var setPrototypeOf = __webpack_require__("8b97").set;
-module.exports = function (that, target, C) {
-  var S = target.constructor;
-  var P;
-  if (S !== C && typeof S == 'function' && (P = S.prototype) !== C.prototype && isObject(P) && setPrototypeOf) {
-    setPrototypeOf(that, P);
-  } return that;
-};
 
 
 /***/ }),
@@ -2484,80 +1110,6 @@ module.exports = __webpack_require__("8378").Object;
 
 /***/ }),
 
-/***/ "71fe":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.assign = assign;
-exports.walk = walk;
-exports.join = join;
-
-var _eivindfjeldstadDot = __webpack_require__("b258");
-
-var _eivindfjeldstadDot2 = _interopRequireDefault(_eivindfjeldstadDot);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Assign given key and value (or object) to given object
- *
- * @private
- */
-
-function assign(key, val, obj) {
-  if (typeof key == 'string') {
-    obj[key] = val;
-    return;
-  }
-
-  Object.keys(key).forEach(function (k) {
-    return obj[k] = key[k];
-  });
-}
-
-/**
- * Walk path
- *
- * @private
- */
-
-function walk(path, obj, callback) {
-  var parts = path.split(/\.\$(?=\.|$)/);
-  var first = parts.shift();
-  var arr = _eivindfjeldstadDot2.default.get(obj, first);
-
-  if (!parts.length) {
-    return callback(first, arr);
-  }
-
-  if (!Array.isArray(arr)) {
-    return;
-  }
-
-  for (var i = 0; i < arr.length; i++) {
-    var current = join(i, first);
-    var next = current + parts.join('.$');
-    walk(next, obj, callback);
-  }
-}
-
-/**
- * Join `path` with `prefix`
- *
- * @private
- */
-
-function join(path, prefix) {
-  return prefix ? prefix + '.' + path : path;
-}
-
-/***/ }),
-
 /***/ "7333":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2685,10 +1237,405 @@ module.exports = function (it, tag, stat) {
 
 /***/ }),
 
+/***/ "8086":
+/***/ (function(module, exports) {
+
+/*!
+ * micro-schema-validator
+ * Damn simple javascript object schema validator
+ * 
+ * @version v0.1.2
+ * @author Array Huang <hyw125@gmail.com>
+ * @homepage https://github.com/Array-Huang/micro-schema-validator#readme
+ * @repository git+https://github.com/Array-Huang/micro-schema-validator.git
+ */
+module.exports =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./index.js");
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./index.js":
+/*!******************!*\
+  !*** ./index.js ***!
+  \******************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! ./src */ "./src/index.js").default;
+
+/***/ }),
+
+/***/ "./src/error.class.js":
+/*!****************************!*\
+  !*** ./src/error.class.js ***!
+  \****************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ValidatorError; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ValidatorError = function ValidatorError(_ref) {
+  var columnName = _ref.columnName,
+      columnVal = _ref.columnVal,
+      ruleName = _ref.ruleName,
+      ruleVal = _ref.ruleVal,
+      msg = _ref.msg;
+
+  _classCallCheck(this, ValidatorError);
+
+  this.columnName = columnName;
+  this.columnVal = columnVal;
+  this.ruleName = ruleName;
+  this.ruleVal = ruleVal;
+  this.msg = msg;
+};
+
+
+
+/***/ }),
+
+/***/ "./src/index.js":
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _validators__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./validators */ "./src/validators.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./src/utils.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+
+var MicroSchemaValidator =
+/*#__PURE__*/
+function () {
+  function MicroSchemaValidator(schema) {
+    _classCallCheck(this, MicroSchemaValidator);
+
+    this._library_name = 'micro-schema-validator';
+
+    if (!schema) {
+      console.warn("Schema can't be empty.");
+    }
+
+    this.schema = schema;
+    this.errors = [];
+  }
+
+  _createClass(MicroSchemaValidator, [{
+    key: "validate",
+    value: function validate(target) {
+      if (!target) {
+        console.warn("Validate target can't be empty.");
+      }
+
+      for (var columnName in this.schema) {
+        if (!Object.prototype.hasOwnProperty.call(this.schema, columnName)) {
+          continue;
+        }
+
+        var rules = this.schema[columnName];
+
+        for (var ruleName in rules) {
+          if (!Object.prototype.hasOwnProperty.call(rules, ruleName)) {
+            continue;
+          }
+
+          var columnVal = target[columnName];
+          var ruleVal = rules[ruleName];
+
+          if (ruleName !== 'required' && (typeof columnVal === 'undefined' || Object(_utils__WEBPACK_IMPORTED_MODULE_1__["isNull"])(columnVal))) {
+            continue;
+          }
+
+          _validators__WEBPACK_IMPORTED_MODULE_0__["default"].check(this.errors, {
+            columnName: columnName,
+            columnVal: columnVal,
+            ruleName: ruleName,
+            ruleVal: ruleVal
+          });
+        }
+      }
+
+      return {
+        status: this.errors.length === 0,
+        errors: this.errors
+      };
+    }
+  }, {
+    key: "_getName",
+    value: function _getName() {
+      return this._library_name;
+    }
+  }]);
+
+  return MicroSchemaValidator;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (MicroSchemaValidator);
+
+/***/ }),
+
+/***/ "./src/utils.js":
+/*!**********************!*\
+  !*** ./src/utils.js ***!
+  \**********************/
+/*! exports provided: isNull */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isNull", function() { return isNull; });
+function isNull(val) {
+  return !val && typeof val !== 'undefined' && val !== 0;
+}
+
+/***/ }),
+
+/***/ "./src/validators.js":
+/*!***************************!*\
+  !*** ./src/validators.js ***!
+  \***************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _error_class__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./error.class */ "./src/error.class.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "./src/utils.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  originInfo: null,
+  buildError: function buildError(msg) {
+    return new _error_class__WEBPACK_IMPORTED_MODULE_0__["default"](_objectSpread({}, this.originInfo, {
+      msg: msg
+    }));
+  },
+  check: function check(errorsContainer, _ref) {
+    var columnName = _ref.columnName,
+        columnVal = _ref.columnVal,
+        ruleName = _ref.ruleName,
+        ruleVal = _ref.ruleVal;
+    var checkMethodName = "".concat(ruleName, "Check");
+
+    if (!this[checkMethodName] && typeof this[checkMethodName] !== 'function') {
+      console.warn("Unexpected rule found: ".concat(ruleName));
+      return;
+    }
+
+    this.originInfo = {
+      columnName: columnName,
+      columnVal: columnVal,
+      ruleName: ruleName,
+      ruleVal: ruleVal
+    };
+    var checkResult = this[checkMethodName]({
+      columnName: columnName,
+      columnVal: columnVal,
+      ruleName: ruleName,
+      ruleVal: ruleVal
+    });
+
+    if (checkResult instanceof _error_class__WEBPACK_IMPORTED_MODULE_0__["default"]) {
+      errorsContainer.push(checkResult);
+    }
+  },
+  requiredCheck: function requiredCheck(_ref2) {
+    var columnName = _ref2.columnName,
+        columnVal = _ref2.columnVal,
+        ruleVal = _ref2.ruleVal;
+
+    if (!!ruleVal && (typeof columnVal === 'undefined' || Object(_utils__WEBPACK_IMPORTED_MODULE_1__["isNull"])(columnVal))) {
+      return this.buildError("RequiredCheck: ".concat(columnName, " is required"));
+    }
+
+    return true;
+  },
+  typeCheck: function typeCheck(_ref3) {
+    var columnName = _ref3.columnName,
+        columnVal = _ref3.columnVal,
+        ruleVal = _ref3.ruleVal;
+    var availableTypes = ruleVal.split('|');
+
+    if (availableTypes.length === 0) {
+      console.warn('TypeCheck: Type requirement should not be empty');
+    }
+
+    var columnValType = _typeof(columnVal);
+
+    if (availableTypes.every(function (availableType) {
+      if (availableType === 'array') {
+        return !Array.isArray(columnVal);
+      }
+
+      return columnValType !== availableType;
+    })) {
+      return this.buildError("TypeCheck: ".concat(columnName, " need to be ").concat(ruleVal, ", but now is ").concat(columnValType));
+    }
+  },
+  sizeCheck: function sizeCheck(_ref4) {
+    var columnName = _ref4.columnName,
+        columnVal = _ref4.columnVal,
+        ruleVal = _ref4.ruleVal;
+
+    function _stringAndArraySizeCheck() {
+      var length = columnVal.length;
+
+      if (typeof ruleVal.min === 'number' && ruleVal.min > 0 && length < ruleVal.min) {
+        return false;
+      }
+
+      if (typeof ruleVal.max === 'number' && ruleVal.max > 0 && length > ruleVal.max) {
+        return false;
+      }
+
+      return true;
+    }
+
+    function _numberSizeCheck() {
+      if (typeof ruleVal.min === 'number' && ruleVal.min > 0 && columnVal < ruleVal.min) {
+        return false;
+      }
+
+      if (typeof ruleVal.max === 'number' && ruleVal.max > 0 && columnVal > ruleVal.max) {
+        return false;
+      }
+
+      return true;
+    }
+
+    var checkResult;
+
+    if (typeof columnVal === 'string' || Array.isArray(columnVal)) {
+      checkResult = _stringAndArraySizeCheck();
+    } else if (typeof columnVal === 'number') {
+      checkResult = _numberSizeCheck();
+    } else {
+      console.warn("SizeCheck: ".concat(columnName, " need to be a string, a number, or an array"));
+      return;
+    }
+
+    if (!checkResult) {
+      return this.buildError('SizeCheck failed');
+    }
+  }
+});
+
+/***/ })
+
+/******/ });
+//# sourceMappingURL=micro-schema-validator.js.map
+
+/***/ }),
+
 /***/ "8378":
 /***/ (function(module, exports) {
 
-var core = module.exports = { version: '2.6.9' };
+var core = module.exports = { version: '2.6.10' };
 if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 
@@ -2995,38 +1942,6 @@ setToStringTag(global.JSON, 'JSON', true);
 
 /***/ }),
 
-/***/ "8b97":
-/***/ (function(module, exports, __webpack_require__) {
-
-// Works with __proto__ only. Old v8 can't work with null proto objects.
-/* eslint-disable no-proto */
-var isObject = __webpack_require__("d3f4");
-var anObject = __webpack_require__("cb7c");
-var check = function (O, proto) {
-  anObject(O);
-  if (!isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
-};
-module.exports = {
-  set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
-    function (test, buggy, set) {
-      try {
-        set = __webpack_require__("9b43")(Function.call, __webpack_require__("11e9").f(Object.prototype, '__proto__').set, 2);
-        set(test, []);
-        buggy = !(test instanceof Array);
-      } catch (e) { buggy = true; }
-      return function setPrototypeOf(O, proto) {
-        check(O, proto);
-        if (buggy) O.__proto__ = proto;
-        else set(O, proto);
-        return O;
-      };
-    }({}, false) : undefined),
-  check: check
-};
-
-
-/***/ }),
-
 /***/ "8e6e":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3278,43 +2193,6 @@ __webpack_require__("214f")('replace', 2, function (defined, REPLACE, $replace, 
 
 /***/ }),
 
-/***/ "aa77":
-/***/ (function(module, exports, __webpack_require__) {
-
-var $export = __webpack_require__("5ca1");
-var defined = __webpack_require__("be13");
-var fails = __webpack_require__("79e5");
-var spaces = __webpack_require__("fdef");
-var space = '[' + spaces + ']';
-var non = '\u200b\u0085';
-var ltrim = RegExp('^' + space + space + '*');
-var rtrim = RegExp(space + space + '*$');
-
-var exporter = function (KEY, exec, ALIAS) {
-  var exp = {};
-  var FORCE = fails(function () {
-    return !!spaces[KEY]() || non[KEY]() != non;
-  });
-  var fn = exp[KEY] = FORCE ? exec(trim) : spaces[KEY];
-  if (ALIAS) exp[ALIAS] = fn;
-  $export($export.P + $export.F * FORCE, 'String', exp);
-};
-
-// 1 -> String#trimLeft
-// 2 -> String#trimRight
-// 3 -> String#trim
-var trim = exporter.trim = function (string, TYPE) {
-  string = String(defined(string));
-  if (TYPE & 1) string = string.replace(ltrim, '');
-  if (TYPE & 2) string = string.replace(rtrim, '');
-  return string;
-};
-
-module.exports = exporter;
-
-
-/***/ }),
-
 /***/ "ac6a":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3393,108 +2271,6 @@ __webpack_require__("5ca1")({
 }, {
   exec: regexpExec
 });
-
-
-/***/ }),
-
-/***/ "b258":
-/***/ (function(module, exports) {
-
-/**
- * Set given `path`
- *
- * @param {Object} obj
- * @param {String} path
- * @param {Mixed} val
- * @api public
- */
-
-exports.set = function (obj, path, val) {
-  var segs = path.split('.');
-  var attr = segs.pop();
-  
-  for (var i = 0; i < segs.length; i++) {
-    var seg = segs[i];
-    obj[seg] = obj[seg] || {};
-    obj = obj[seg];
-  }
-  
-  obj[attr] = val;
-};
-
-/**
- * Get given `path`
- *
- * @param {Object} obj
- * @param {String} path
- * @return {Mixed}
- * @api public
- */
-
-exports.get = function (obj, path) {
-  var segs = path.split('.');
-  var attr = segs.pop();
-  
-  for (var i = 0; i < segs.length; i++) {
-    var seg = segs[i];
-    if (!obj[seg]) return;
-    obj = obj[seg];
-  }
-  
-  return obj[attr];
-};
-
-/***/ }),
-
-/***/ "b3b1":
-/***/ (function(module, exports) {
-
-/**
- * toString ref.
- */
-
-var toString = Object.prototype.toString;
-
-/**
- * Return the type of `val`.
- *
- * @param {Mixed} val
- * @return {String}
- * @api public
- */
-
-module.exports = function(val){
-  switch (toString.call(val)) {
-    case '[object Date]': return 'date';
-    case '[object RegExp]': return 'regexp';
-    case '[object Arguments]': return 'arguments';
-    case '[object Array]': return 'array';
-    case '[object Error]': return 'error';
-  }
-
-  if (val === null) return 'null';
-  if (val === undefined) return 'undefined';
-  if (val !== val) return 'nan';
-  if (val && val.nodeType === 1) return 'element';
-
-  if (isBuffer(val)) return 'buffer';
-
-  val = val.valueOf
-    ? val.valueOf()
-    : Object.prototype.valueOf.apply(val);
-
-  return typeof val;
-};
-
-// code borrowed from https://github.com/feross/is-buffer/blob/master/index.js
-function isBuffer(obj) {
-  return !!(obj != null &&
-    (obj._isBuffer || // For Safari 5-7 (missing Object.prototype.constructor)
-      (obj.constructor &&
-      typeof obj.constructor.isBuffer === 'function' &&
-      obj.constructor.isBuffer(obj))
-    ))
-}
 
 
 /***/ }),
@@ -3590,83 +2366,6 @@ module.exports = __webpack_require__("2d00") || !__webpack_require__("79e5")(fun
   __defineSetter__.call(null, K, function () { /* empty */ });
   delete __webpack_require__("7726")[K];
 });
-
-
-/***/ }),
-
-/***/ "c5f6":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var global = __webpack_require__("7726");
-var has = __webpack_require__("69a8");
-var cof = __webpack_require__("2d95");
-var inheritIfRequired = __webpack_require__("5dbc");
-var toPrimitive = __webpack_require__("6a99");
-var fails = __webpack_require__("79e5");
-var gOPN = __webpack_require__("9093").f;
-var gOPD = __webpack_require__("11e9").f;
-var dP = __webpack_require__("86cc").f;
-var $trim = __webpack_require__("aa77").trim;
-var NUMBER = 'Number';
-var $Number = global[NUMBER];
-var Base = $Number;
-var proto = $Number.prototype;
-// Opera ~12 has broken Object#toString
-var BROKEN_COF = cof(__webpack_require__("2aeb")(proto)) == NUMBER;
-var TRIM = 'trim' in String.prototype;
-
-// 7.1.3 ToNumber(argument)
-var toNumber = function (argument) {
-  var it = toPrimitive(argument, false);
-  if (typeof it == 'string' && it.length > 2) {
-    it = TRIM ? it.trim() : $trim(it, 3);
-    var first = it.charCodeAt(0);
-    var third, radix, maxCode;
-    if (first === 43 || first === 45) {
-      third = it.charCodeAt(2);
-      if (third === 88 || third === 120) return NaN; // Number('+0x1') should be NaN, old V8 fix
-    } else if (first === 48) {
-      switch (it.charCodeAt(1)) {
-        case 66: case 98: radix = 2; maxCode = 49; break; // fast equal /^0b[01]+$/i
-        case 79: case 111: radix = 8; maxCode = 55; break; // fast equal /^0o[0-7]+$/i
-        default: return +it;
-      }
-      for (var digits = it.slice(2), i = 0, l = digits.length, code; i < l; i++) {
-        code = digits.charCodeAt(i);
-        // parseInt parses a string to a first unavailable symbol
-        // but ToNumber should return NaN if a string contains unavailable symbols
-        if (code < 48 || code > maxCode) return NaN;
-      } return parseInt(digits, radix);
-    }
-  } return +it;
-};
-
-if (!$Number(' 0o1') || !$Number('0b1') || $Number('+0x1')) {
-  $Number = function Number(value) {
-    var it = arguments.length < 1 ? 0 : value;
-    var that = this;
-    return that instanceof $Number
-      // check on 1..constructor(foo) case
-      && (BROKEN_COF ? fails(function () { proto.valueOf.call(that); }) : cof(that) != NUMBER)
-        ? inheritIfRequired(new Base(toNumber(it)), that, $Number) : toNumber(it);
-  };
-  for (var keys = __webpack_require__("9e1e") ? gOPN(Base) : (
-    // ES3:
-    'MAX_VALUE,MIN_VALUE,NaN,NEGATIVE_INFINITY,POSITIVE_INFINITY,' +
-    // ES6 (in case, if modules with ES6 Number statics required before):
-    'EPSILON,isFinite,isInteger,isNaN,isSafeInteger,MAX_SAFE_INTEGER,' +
-    'MIN_SAFE_INTEGER,parseFloat,parseInt,isInteger'
-  ).split(','), j = 0, key; keys.length > j; j++) {
-    if (has(Base, key = keys[j]) && !has($Number, key)) {
-      dP($Number, key, gOPD(Base, key));
-    }
-  }
-  $Number.prototype = proto;
-  proto.constructor = $Number;
-  __webpack_require__("2aba")(global, NUMBER, $Number);
-}
 
 
 /***/ }),
@@ -3778,57 +2477,6 @@ module.exports = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
 };
 
-
-/***/ }),
-
-/***/ "d44f":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * Custom errors.
- *
- * @private
- */
-
-var ValidationError = function (_Error) {
-  _inherits(ValidationError, _Error);
-
-  function ValidationError(message, path) {
-    _classCallCheck(this, ValidationError);
-
-    var _this = _possibleConstructorReturn(this, (ValidationError.__proto__ || Object.getPrototypeOf(ValidationError)).call(this, message));
-
-    Object.defineProperty(_this, 'path', {
-      enumerable: false,
-      configurable: true,
-      writable: true,
-      value: path
-    });
-
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(_this, ValidationError);
-    }
-    return _this;
-  }
-
-  return ValidationError;
-}(Error);
-
-exports.default = ValidationError;
-module.exports = exports.default;
 
 /***/ }),
 
@@ -4729,73 +3377,74 @@ function addMaximizeEvent(handler) {
     event.stopPropagation();
   });
 }
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es6.number.constructor.js
-var es6_number_constructor = __webpack_require__("c5f6");
-
-// EXTERNAL MODULE: ./node_modules/validate/build/schema.js
-var build_schema = __webpack_require__("5d8f");
-var schema_default = /*#__PURE__*/__webpack_require__.n(build_schema);
+// EXTERNAL MODULE: ./node_modules/micro-schema-validator/lib/micro-schema-validator.js
+var micro_schema_validator = __webpack_require__("8086");
+var micro_schema_validator_default = /*#__PURE__*/__webpack_require__.n(micro_schema_validator);
 
 // CONCATENATED MODULE: ./src/libs/validate.js
 
 
-
 var RULES = {
   windowSelector: {
-    type: String,
+    type: 'string',
     required: false
   },
   minWidth: {
-    type: Number,
+    type: 'number',
     size: {
       min: 1
     }
   },
   maxWidth: {
-    type: Number
+    type: 'number'
   },
   minHeight: {
-    type: Number,
+    type: 'number',
     size: {
       min: 1
     }
   },
   maxHeight: {
-    type: Number
+    type: 'number'
   },
   resizeHandlerClassName: {
-    type: String
+    type: 'string'
   },
   customMoveHandler: {
-    type: String
+    type: 'string'
   },
   customMaximizeHandler: {
-    type: String
+    type: 'string'
   },
   movable: {
-    type: Boolean,
+    type: 'boolean',
     required: false
   },
   resizable: {
     required: false
   },
   maximizeCallback: {
-    type: Function
+    type: 'function'
   }
 };
 function validate() {
   var customParams = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var schema = new schema_default.a(RULES);
-  var errors = schema.validate(customParams);
+  var schema = new micro_schema_validator_default.a(RULES);
+  var validateResult = schema.validate(customParams);
 
-  if (errors.length === 0) {
-    return true;
+  if (validateResult.status) {
+    return;
   } else {
     console.warn('There are some mistakes in your params to vue-directive-window, please fix them. Otherwise, it will act not like what you expected.');
-    errors.forEach(function (error) {
-      delete customParams[error.path];
-      console.warn(error.message);
-    });
+
+    if (Array.isArray(validateResult.errors)) {
+      validateResult.errors.forEach(function (error) {
+        console.warn(error.msg);
+        /* 参数有误则立刻抛出异常 */
+
+        throw 'Params validation failed, so vue-directive-window stopped.';
+      });
+    }
   }
 }
 // CONCATENATED MODULE: ./src/config/default-params.js
@@ -4866,7 +3515,13 @@ function isMoveHandlerEqualWindow(window, moveHandler) {
 }
 
 function eventBinding(el, customParams) {
-  var finalParams = _prepareParams(customParams);
+  /* 传入参数校验，参数有误则立刻停止执行 */
+  try {
+    var finalParams = _prepareParams(customParams);
+  } catch (exception) {
+    console.warn(exception);
+    return;
+  }
 
   el = finalParams.windowSelector ? el.querySelector(finalParams.windowSelector) : el;
   var moveHandler = getMoveHandler(finalParams, el);
@@ -4954,15 +3609,6 @@ function enhanceWindow(el, customParams) {
 
 /* harmony default export */ var entry_lib = __webpack_exports__["default"] = (main);
 
-
-
-/***/ }),
-
-/***/ "fdef":
-/***/ (function(module, exports) {
-
-module.exports = '\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003' +
-  '\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF';
 
 
 /***/ }),

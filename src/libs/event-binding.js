@@ -47,7 +47,14 @@ function isMoveHandlerEqualWindow(window, moveHandler) {
 }
 
 export function eventBinding(el, customParams) {
-  const finalParams = _prepareParams(customParams);
+  /* 传入参数校验，参数有误则立刻停止执行 */
+  try {
+    var finalParams = _prepareParams(customParams);
+  } catch (exception) {
+    console.warn(exception);
+    return;
+  }
+
   el = finalParams.windowSelector
     ? el.querySelector(finalParams.windowSelector)
     : el;

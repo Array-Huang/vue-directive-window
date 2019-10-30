@@ -1,55 +1,58 @@
-import Schema from 'validate';
+import Schema from 'micro-schema-validator';
 const RULES = {
   windowSelector: {
-    type: String,
+    type: 'string',
     required: false,
   },
   minWidth: {
-    type: Number,
+    type: 'number',
     size: { min: 1 },
   },
   maxWidth: {
-    type: Number,
+    type: 'number',
   },
   minHeight: {
-    type: Number,
+    type: 'number',
     size: { min: 1 },
   },
   maxHeight: {
-    type: Number,
+    type: 'number',
   },
   resizeHandlerClassName: {
-    type: String,
+    type: 'string',
   },
   customMoveHandler: {
-    type: String,
+    type: 'string',
   },
   customMaximizeHandler: {
-    type: String,
+    type: 'string',
   },
   movable: {
-    type: Boolean,
+    type: 'boolean',
     required: false,
   },
   resizable: {
     required: false,
   },
   maximizeCallback: {
-    type: Function,
+    type: 'function',
   },
 };
 export function validate(customParams = {}) {
   const schema = new Schema(RULES);
-  const errors = schema.validate(customParams);
-  if (errors.length === 0) {
-    return true;
+  const validateResult = schema.validate(customParams);
+  if (validateResult.status) {
+    return;
   } else {
     console.warn(
       'There are some mistakes in your params to vue-directive-window, please fix them. Otherwise, it will act not like what you expected.'
     );
-    errors.forEach(error => {
-      delete customParams[error.path];
-      console.warn(error.message);
-    });
+    if (Array.isArray(validateResult.errors)) {
+      validateResult.errors.forEach(error => {
+        console.warn(error.msg);
+        /* 参数有误则立刻抛出异常 */
+        throw 'Params validation failed, so vue-directive-window stopped.';
+      });
+    }
   }
 }

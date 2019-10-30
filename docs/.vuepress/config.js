@@ -1,8 +1,11 @@
 module.exports = {
   base: '/vue-directive-window/',
   head: [
-    ['script', { src: './vendor/vue.min.js' }],
-    ['script', { src: './vue-directive-window.umd.min.js' }],
+    ['script', { src: '/vendor/vue.min.js' }],
+    [
+      'script',
+      { src: '/vue-directive-window.umd.min.js' },
+    ],
   ],
   locales: {
     // 键名是该语言所属的子路径
@@ -49,7 +52,12 @@ module.exports = {
         label: '简体中文',
         /* 侧边栏 */
         sidebar: {
-          '/zh-CN/': ['quick-start', 'browser-compatibility', 'examples', 'params'],
+          '/zh-CN/': [
+            'quick-start',
+            'browser-compatibility',
+            'examples',
+            'params',
+          ],
         },
       },
     },
