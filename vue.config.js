@@ -1,5 +1,5 @@
-// import webpack from 'webpack';
 const webpack = require('webpack');
+const AfterBuildCbPlugin = require('./script/dist-copy');
 
 const banner = `
 vue-directive-window
@@ -10,7 +10,6 @@ hash: [hash]
 `;
 
 module.exports = {
-  // transpileDependencies: ['validate'],
   chainWebpack: config => {
     config.output.libraryExport('default');
     config.plugin('banner').use(webpack.BannerPlugin, [
@@ -19,5 +18,6 @@ module.exports = {
         entryOnly: true,
       },
     ]);
+    config.plugin('after-build').use(AfterBuildCbPlugin);
   },
 };
