@@ -22,8 +22,6 @@
 - [English README](https://github.com/ElemeFE/element/blob/dev/README.md)
 - [English Document](https://array-huang.github.io/vue-directive-window/)
 
-## 快速上手
-
 > 注意 请确保你的 Node.js 版本 >= 8。 
 
 ## 引入vue-directive-window
@@ -37,6 +35,11 @@
 ### npm方式引入
 ```bash
 npm install vue-directive-window
+```
+
+## 打开本地文档
+```bash
+npm start
 ```
 
 ## 开始使用

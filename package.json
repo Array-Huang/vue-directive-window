@@ -50,13 +50,19 @@
     "@vue/cli-service": "^3.12.1",
     "@vue/eslint-config-prettier": "^4.0.1",
     "babel-eslint": "^10.0.2",
+    "cz-conventional-changelog": "^3.0.2",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.3",
+    "shelljs": "^0.8.3",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
-    "shelljs": "^0.8.3",
     "vue-template-compiler": "^2.6.10",
     "vuepress": "^1.2.0",
     "vuepress-plugin-demo-block": "^0.7.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

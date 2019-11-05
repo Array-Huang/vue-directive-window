@@ -22,8 +22,6 @@
 - [中文 README](https://github.com/ElemeFE/element/blob/dev/README.zh-CN.md)
 - [中文 Document](https://array-huang.github.io/vue-directive-window/zh-CN/)
 
-## Quick Start
-
 > `vue-directive-window` requires your Node.js version >= 8.
 
 ## Installation
@@ -37,6 +35,11 @@ There are two ways of installation, from CDN and from npm, you can choose which 
 ### npm
 ```bash
 npm install vue-directive-window
+```
+
+## Local document
+```bash
+npm start
 ```
 
 ## Hello World
