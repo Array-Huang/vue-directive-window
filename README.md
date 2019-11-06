@@ -19,7 +19,7 @@
 > Vue.js directive that enhance your Modal Window, support drag, resize and maximize.
 
 - [Github](https://github.com/Array-Huang/vue-directive-window)
-- [中文 README](https://github.com/ElemeFE/element/blob/dev/README.zh-CN.md)
+- [中文 README](https://github.com/Array-Huang/vue-directive-window/blob/master/README.zh-CN.md)
 - [中文 Document](https://array-huang.github.io/vue-directive-window/zh-CN/)
 
 > `vue-directive-window` requires your Node.js version >= 8.
