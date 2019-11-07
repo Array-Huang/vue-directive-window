@@ -1,11 +1,15 @@
 const webpack = require('webpack');
 const AfterBuildCbPlugin = require('./script/dist-copy');
+const pkg = require('./package.json');
 
 const banner = `
-vue-directive-window
+${pkg.name}
+${pkg.description}\n
+@version v${pkg.version}
+@homepage ${pkg.homepage}
+@repository ${pkg.repository.url}\n
 (c) 2019 Array-Huang
 Released under the MIT License.
-Github: https://github.com/Array-Huang/vue-directive-window
 hash: [hash]
 `;
 
