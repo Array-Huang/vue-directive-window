@@ -19,7 +19,7 @@
 > 让你的模态框轻而易举地支持类窗口操作。
 
 - [Github](https://github.com/Array-Huang/vue-directive-window)
-- [English README](https://github.com/ElemeFE/element/blob/dev/README.md)
+- [English README](https://github.com/Array-Huang/vue-directive-window/blob/master/README.md)
 - [English Document](https://array-huang.github.io/vue-directive-window/)
 
 > 注意 请确保你的 Node.js 版本 >= 8。 
