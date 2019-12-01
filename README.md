@@ -113,7 +113,7 @@ enhanceWindow(document.querySelector('.demo-window'), windowParams);
 - Type: `Number`
 - Description: window's maximum height(px)
 
-## movable
+### movable
 - Type: `Boolean`/`String`
 - Default: `true`
 - Accepted Values：`true`/`false`/`'horizontal'`/`'vertical'`
@@ -137,15 +137,15 @@ enhanceWindow(document.querySelector('.demo-window'), windowParams);
 - Type: `Function`
 - Description: window maximizeCallback function; there is one parameter, which means if it is current maximize(Boolean).
 
-## moveStartCallback
+### moveStartCallback
 - Type: `Function`
 - Description: triggers when drag&move start.
 
-## movingCallback
+### movingCallback
 - Type: `Function`
 - Description: triggers multiple times during drag&move going.
 
-## moveEndCallback
+### moveEndCallback
 - Type: `Function`
 - Description: triggers when drag&move end.
 
