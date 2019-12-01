@@ -41,3 +41,15 @@
 ## maximizeCallback
 - 类型: `Function`
 - 说明: 窗口最大化的回调函数。回调参数为：当前是否最大化(Boolean)。
+
+## moveStartCallback
+- 类型: `Function`
+- 说明: 拖拽移动开始时触发。
+
+## movingCallback
+- 类型: `Function`
+- 说明: 拖拽移动过程中会多次触发。
+
+## moveEndCallback
+- 类型: `Function`
+- 说明: 拖拽移动结束时触发。

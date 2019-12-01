@@ -51,6 +51,10 @@ function _calWindowCurrentPosition(
 
 export function handleStartEventForMove(event) {
   function _handleEndEventForMove(event) {
+    /* 提供拖拽移动结束的钩子 */
+    moveEndCallback();
+    nowInMoving = false;
+
     document.removeEventListener(moveEvent, _handleMoveEventForMove, false); // 拖拽结束，清除移动的事件回调
 
     event.preventDefault();
@@ -92,12 +96,23 @@ export function handleStartEventForMove(event) {
       window.className.indexOf('moving') === -1
     ) {
       window.className += ' moving';
+
+      /* 提供拖拽移动相关的钩子 */
+      if (!nowInMoving) {
+        moveStartCallback();
+        nowInMoving = true; // 保证在一次完整的拖拽移动过程中只触发一次moveStartCallback
+      }
+      movingCallback();
     }
   }
 
   const window = this.window;
   const startPoint = getClientPosition(event); // 记录本次拖拽的起点位置
   const movableParam = this.params.movable;
+  const moveStartCallback = this.params.moveStartCallback;
+  const movingCallback = this.params.movingCallback;
+  const moveEndCallback = this.params.moveEndCallback;
+  let nowInMoving = false;
 
   /* 当窗口本体作为MoveHandler且启用resize特性时，需要判断拖拽的位置是否与resize重复 */
   if (

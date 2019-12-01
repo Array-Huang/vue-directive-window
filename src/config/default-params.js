@@ -8,4 +8,7 @@ export default {
   customMoveHandler: null, // 自定义的拖拽移动handler，可接受选择器形式的参数，或是Element；为空则以窗口自身为handler
   customMaximizeHandler: null, // 自定义的最大化handler，可接受选择器形式的参数，或是Element；为空则不开启最大化的功能
   maximizeCallback: () => {}, // 最大化后的回调函数
+  moveStartCallback: () => {}, // 拖拽移动开始的回调函数
+  movingCallback: () => {}, // 拖拽移动过程中的回调函数，在每次拖拽过程中会被执行多次
+  moveEndCallback: () => {}, // 拖拽移动结束的回调函数
 };

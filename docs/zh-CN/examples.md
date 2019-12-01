@@ -300,3 +300,72 @@
 ```
 
 :::
+
+## 避免拖拽移动过程中触发窗口内部的 click 事件
+当你没有指定`customMoveHandler`参数时，用户可以拖拽窗口内部任一位置来移动窗口，但这会带来一个问题：假如用户通过拖拽窗口内某一按钮来移动窗口，则当用户结束拖拽时，这个按钮也会视为被触发了 **click** 事件，这通常不是我们所期望发生的。
+
+因此，vue-directive-window 提供了拖拽移动相关的钩子，你可以在钩子的回调函数上加锁来避免拖拽移动触发 click 事件，下面是具体的示例：
+
+::: demo
+
+```html
+<template>
+  <div class="container">
+    <div class="window window6" v-show="ifShowWindow" v-window="windowParams">
+      <div class="window__header">
+        避免拖拽移动过程中触发窗口内部的 click 事件
+      </div>
+      <div class="window__body">
+        <button @click="clickCb">点击执行alert</button>
+      </div>
+    </div>
+
+    <button type="button" @click="ifShowWindow = true" v-if="!ifShowWindow">
+      显示窗口
+    </button>
+    <button type="button" @click="ifShowWindow = false" v-else>隐藏窗口</button>
+  </div>
+</template>
+<script>
+  Vue.use(window['vue-directive-window']);
+
+  export default {
+    data() {
+      return {
+        windowParams: {
+          resizable: false,
+          moveStartCallback: () => {
+            this.clickLock = true;
+          },
+          moveEndCallback: () => {
+            setTimeout(() => {
+              this.clickLock = false;
+            }, 300);
+          }
+        },
+        ifShowWindow: false,
+        clickLock: false,
+      };
+    },
+    methods: {
+      clickCb() {
+        if (this.clickLock) return;
+        alert('您点击了按钮');
+      }
+    }
+  };
+</script>
+<style>
+  .container {
+    padding: 30px;
+  }
+  .window6 {
+    width: 400px;
+    position: fixed;
+    top: 60px;
+    left: 0;
+  }
+</style>
+```
+
+:::

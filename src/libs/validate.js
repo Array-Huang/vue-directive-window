@@ -38,6 +38,18 @@ const RULES = {
   maximizeCallback: {
     type: 'function',
   },
+  moveStartCallback: {
+    type: 'function',
+    required: false,
+  },
+  movingCallback: {
+    type: 'function',
+    required: false,
+  },
+  moveEndCallback: {
+    type: 'function',
+    required: false,
+  },
 };
 export function validate(customParams = {}) {
   const schema = new Schema(RULES);

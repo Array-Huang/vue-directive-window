@@ -112,9 +112,10 @@ enhanceWindow(document.querySelector('.demo-window'), windowParams);
 - 说明: 窗口可被调整至的最大高度(px)
 
 ### movable
-- 类型: `Boolean`
+- 类型: `Boolean`/`String`
 - 默认值: `true`
-- 说明: 是否开启拖拽移动功能
+- 可选值：`true`/`false`/`'horizontal'`/`'vertical'`
+- 说明: 是否开启拖拽移动功能；`'horizontal'`表示只允许水平方向的拖拽移动，`'vertical'`表示只允许垂直方向的拖拽移动，`true`表示水平垂直方向的拖拽移动均被允可。
 
 ### resizable
 - 类型: `Boolean`/`Array`
@@ -133,6 +134,18 @@ enhanceWindow(document.querySelector('.demo-window'), windowParams);
 ### maximizeCallback
 - 类型: `Function`
 - 说明: 窗口最大化的回调函数。回调参数为：当前是否最大化(Boolean)。
+
+### moveStartCallback
+- 类型: `Function`
+- 说明: 拖拽移动开始时触发。
+
+### movingCallback
+- 类型: `Function`
+- 说明: 拖拽移动过程中会多次触发。
+
+### moveEndCallback
+- 类型: `Function`
+- 说明: 拖拽移动结束时触发。
 
 ## 喜欢的话，请给个星吧⭐️
 

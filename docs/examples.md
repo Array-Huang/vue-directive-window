@@ -300,3 +300,70 @@ When set `movable` to `'vertical'`, users will be only allow to make vertical dr
 ```
 
 :::
+
+## Avoid Unexpected Click Event Inside Window During Drag Window
+When you have not provided param `customMoveHandler`, users are able to drag&move the window through any position inside the window. Though this may poses a problem: in case user drag&move the window through a button in the window, this button's CLICK event will be triggered when drag&move finish, and this is not we expedted generally.
+
+Therefore, vue-directive-window provide hooks related to drag&move，and you should add LOCK to avaoid the unexpected CLICK event triggered by drag&move. Here is an example:
+
+::: demo
+
+```html
+<template>
+  <div class="container">
+    <div class="window window6" v-show="ifShowWindow" v-window="windowParams">
+      <div class="window__header">
+        Avoid Unexpected Click Event Inside Window During Drag Window
+      </div>
+      <div class="window__body">
+        <button @click="clickCb">clik to excute alert</button>
+      </div>
+    </div>
+
+    <button type="button" @click="ifShowWindow = true" v-if="!ifShowWindow">display window</button>
+    <button type="button" @click="ifShowWindow = false" v-else>hide window</button>
+  </div>
+</template>
+<script>
+  Vue.use(window['vue-directive-window']);
+
+  export default {
+    data() {
+      return {
+        windowParams: {
+          resizable: false,
+          moveStartCallback: () => {
+            this.clickLock = true;
+          },
+          moveEndCallback: () => {
+            setTimeout(() => {
+              this.clickLock = false;
+            }, 300);
+          }
+        },
+        ifShowWindow: false,
+        clickLock: false,
+      };
+    },
+    methods: {
+      clickCb() {
+        if (this.clickLock) return;
+        alert('you clicked the button');
+      }
+    }
+  };
+</script>
+<style>
+  .container {
+    padding: 30px;
+  }
+  .window6 {
+    width: 400px;
+    position: fixed;
+    top: 60px;
+    left: 0;
+  }
+</style>
+```
+
+:::

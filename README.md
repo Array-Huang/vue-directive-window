@@ -113,10 +113,11 @@ enhanceWindow(document.querySelector('.demo-window'), windowParams);
 - Type: `Number`
 - Description: window's maximum height(px)
 
-### movable
-- Type: `Boolean`
+## movable
+- Type: `Boolean`/`String`
 - Default: `true`
-- Description: is drag feature available
+- Accepted Values：`true`/`false`/`'horizontal'`/`'vertical'`
+- Description: Is drag feature available; when set `movable` to `'vertical'`, users will be only allow to make vertical drag; for the same reason, `'horizontal'` means only allow horizontal drag; when set `true`, both directions are available.
 
 ### resizable
 - Type: `Boolean`/`Array`
@@ -135,6 +136,18 @@ enhanceWindow(document.querySelector('.demo-window'), windowParams);
 ### maximizeCallback
 - Type: `Function`
 - Description: window maximizeCallback function; there is one parameter, which means if it is current maximize(Boolean).
+
+## moveStartCallback
+- Type: `Function`
+- Description: triggers when drag&move start.
+
+## movingCallback
+- Type: `Function`
+- Description: triggers multiple times during drag&move going.
+
+## moveEndCallback
+- Type: `Function`
+- Description: triggers when drag&move end.
 
 ## Author
 

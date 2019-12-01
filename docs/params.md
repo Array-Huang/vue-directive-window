@@ -41,3 +41,15 @@
 ## maximizeCallback
 - Type: `Function`
 - Description: window maximizeCallback function; there is one parameter, which means if it is current maximize(Boolean).
+
+## moveStartCallback
+- Type: `Function`
+- Description: triggers when drag&move start.
+
+## movingCallback
+- Type: `Function`
+- Description: triggers multiple times during drag&move going.
+
+## moveEndCallback
+- Type: `Function`
+- Description: triggers when drag&move end.
