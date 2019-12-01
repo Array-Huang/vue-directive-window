@@ -250,3 +250,53 @@ In this example，you could move the window only when you drag the Drag Handler(
 
 :::
 
+## Only Vertical Drag Available
+When set `movable` to `vertical`, users will be only allow to make vertical drag; for the same reason, `horizontal` means only allow horizontal drag.
+
+::: demo
+
+```html
+<template>
+  <div class="container">
+    <div class="window window5" v-show="ifShowWindow" v-window="windowParams">
+      <div class="window__header">
+        Only Vertical Drag Available
+      </div>
+      <div class="window__body">
+        <iframe height="100%" width="100%" frameborder="0" src="https://array-huang.github.io/vue-directive-window/">
+      </div>
+    </div>
+
+    <button type="button" @click="ifShowWindow = true" v-if="!ifShowWindow">display window</button>
+    <button type="button" @click="ifShowWindow = false" v-else>hide window</button>
+  </div>
+</template>
+<script>
+  Vue.use(window['vue-directive-window']);
+
+  export default {
+    data() {
+      return {
+        windowParams: {
+          movable: 'vertical',
+          resizable: false,
+        },
+        ifShowWindow: false,
+      };
+    },
+  };
+</script>
+<style>
+  .container {
+    padding: 30px;
+  }
+  .window5 {
+    width: 400px;
+    position: fixed;
+    top: 60px;
+    left: 0;
+  }
+</style>
+```
+
+:::

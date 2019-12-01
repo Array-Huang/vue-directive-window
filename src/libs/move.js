@@ -11,6 +11,44 @@ import {
 } from './common';
 import constant from '../config/constant';
 
+/**
+ * 计算拖拽移动过程中窗口的位置，在移动过程中每一小段就会触发本方法
+ *
+ * @param {Object} touchStartPoint 鼠标/手势起始点
+ * @param {Object} touchEndPoint 鼠标/手势当前点
+ * @param {Object} windowOriginPosition 窗口在拖拽移动前的位置
+ * @param {Object} movable 用户传入的拖拽移动开关/类型
+ */
+function _calWindowCurrentPosition(
+  touchStartPoint,
+  touchEndPoint,
+  windowOriginPosition,
+  movableParam
+) {
+  const supposePosition = {
+    x: touchEndPoint.x - touchStartPoint.x + windowOriginPosition.x,
+    y: touchEndPoint.y - touchStartPoint.y + windowOriginPosition.y,
+  };
+
+  switch (movableParam) {
+    case 'horizontal':
+      return {
+        x: supposePosition.x,
+        y: windowOriginPosition.y,
+      };
+
+    case 'vertical':
+      return {
+        x: windowOriginPosition.x,
+        y: supposePosition.y,
+      };
+
+    case true:
+    default:
+      return supposePosition;
+  }
+}
+
 export function handleStartEventForMove(event) {
   function _handleEndEventForMove(event) {
     document.removeEventListener(moveEvent, _handleMoveEventForMove, false); // 拖拽结束，清除移动的事件回调
@@ -31,10 +69,12 @@ export function handleStartEventForMove(event) {
 
     const position = getClientPosition(event); // 获取鼠标/手指的位置
     /* 计算位置偏移值 */
-    const positionOffset = {
-      x: position.x - startPoint.x + originPositionOffset.x,
-      y: position.y - startPoint.y + originPositionOffset.y,
-    };
+    const positionOffset = _calWindowCurrentPosition(
+      startPoint,
+      position,
+      originPositionOffset,
+      movableParam
+    );
 
     window.style.top = positionOffset.y + 'px'; // 设置纵坐标，即top
     window.style.left = positionOffset.x + 'px'; // 设置横坐标，left
@@ -57,6 +97,7 @@ export function handleStartEventForMove(event) {
 
   const window = this.window;
   const startPoint = getClientPosition(event); // 记录本次拖拽的起点位置
+  const movableParam = this.params.movable;
 
   /* 当窗口本体作为MoveHandler且启用resize特性时，需要判断拖拽的位置是否与resize重复 */
   if (

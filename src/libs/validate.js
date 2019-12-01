@@ -28,10 +28,11 @@ const RULES = {
     type: 'string',
   },
   movable: {
-    type: 'boolean',
+    type: 'boolean|string',
     required: false,
   },
   resizable: {
+    type: 'boolean|string',
     required: false,
   },
   maximizeCallback: {

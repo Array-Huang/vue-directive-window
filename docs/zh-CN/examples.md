@@ -248,3 +248,55 @@
 
 :::
 
+## 只允许垂直方向的拖拽移动
+把`movable`参数设为`vertical`即可限制用户只能在垂直方向上拖拽移动窗口，而设为`horizontal`则表示限制只能在水平方向上拖拽移动窗口。
+
+::: demo
+
+```html
+<template>
+  <div class="container">
+    <div class="window window5" v-show="ifShowWindow" v-window="windowParams">
+      <div class="window__header">
+        只允许垂直方向的拖拽移动
+      </div>
+      <div class="window__body">
+        <iframe height="100%" width="100%" frameborder="0" src="https://array-huang.github.io/vue-directive-window/">
+      </div>
+    </div>
+
+    <button type="button" @click="ifShowWindow = true" v-if="!ifShowWindow">
+      显示窗口
+    </button>
+    <button type="button" @click="ifShowWindow = false" v-else>隐藏窗口</button>
+  </div>
+</template>
+<script>
+  Vue.use(window['vue-directive-window']);
+
+  export default {
+    data() {
+      return {
+        windowParams: {
+          movable: 'vertical',
+          resizable: false,
+        },
+        ifShowWindow: false,
+      };
+    },
+  };
+</script>
+<style>
+  .container {
+    padding: 30px;
+  }
+  .window5 {
+    width: 400px;
+    position: fixed;
+    top: 60px;
+    left: 0;
+  }
+</style>
+```
+
+:::
