@@ -19,9 +19,10 @@
 - Description: window's maximum height(px)
 
 ## movable
-- Type: `Boolean`
+- Type: `Boolean`/`String`
 - Default: `true`
-- Description: is drag feature available
+- Accepted Values：`true`/`false`/`'horizontal'`/`'vertical'`
+- Description: Is drag feature available; when set `movable` to `'vertical'`, users will be only allow to make vertical drag; for the same reason, `'horizontal'` means only allow horizontal drag; when set `true`, both directions are available.
 
 ## resizable
 - Type: `Boolean`/`Array`

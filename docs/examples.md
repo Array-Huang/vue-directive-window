@@ -251,7 +251,7 @@ In this example，you could move the window only when you drag the Drag Handler(
 :::
 
 ## Only Vertical Drag Available
-When set `movable` to `vertical`, users will be only allow to make vertical drag; for the same reason, `horizontal` means only allow horizontal drag.
+When set `movable` to `'vertical'`, users will be only allow to make vertical drag; for the same reason, `'horizontal'` means only allow horizontal drag.
 
 ::: demo
 

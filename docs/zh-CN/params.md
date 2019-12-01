@@ -19,9 +19,10 @@
 - 说明: 窗口可被调整至的最大高度(px)
 
 ## movable
-- 类型: `Boolean`
+- 类型: `Boolean`/`String`
 - 默认值: `true`
-- 说明: 是否开启拖拽移动功能
+- 可选值：`true`/`false`/`'horizontal'`/`'vertical'`
+- 说明: 是否开启拖拽移动功能；`'horizontal'`表示只允许水平方向的拖拽移动，`'vertical'`表示只允许垂直方向的拖拽移动，`true`表示水平垂直方向的拖拽移动均被允可。
 
 ## resizable
 - 类型: `Boolean`/`Array`
