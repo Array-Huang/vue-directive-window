@@ -4,13 +4,12 @@
  * Vue.js directive that enhance your Modal Window, support drag, resize and maximize.
  * 
  * @version v0.7.5
- * @author Array Huang
  * @homepage https://github.com/Array-Huang/vue-directive-window
  * @repository git+https://github.com/Array-Huang/vue-directive-window.git
  * 
  * (c) 2019 Array-Huang
  * Released under the MIT License.
- * hash: dc6c11a1e50821f4444a
+ * hash: ca26528b31eadf3aaa99
  * 
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -3236,8 +3235,45 @@ function cursorChange(event) {
 
 
 
+/**
+ * 计算拖拽移动过程中窗口的位置，在移动过程中每一小段就会触发本方法
+ *
+ * @param {Object} touchStartPoint 鼠标/手势起始点
+ * @param {Object} touchEndPoint 鼠标/手势当前点
+ * @param {Object} windowOriginPosition 窗口在拖拽移动前的位置
+ * @param {Object} movable 用户传入的拖拽移动开关/类型
+ */
+
+function _calWindowCurrentPosition(touchStartPoint, touchEndPoint, windowOriginPosition, movableParam) {
+  var supposePosition = {
+    x: touchEndPoint.x - touchStartPoint.x + windowOriginPosition.x,
+    y: touchEndPoint.y - touchStartPoint.y + windowOriginPosition.y
+  };
+
+  switch (movableParam) {
+    case 'horizontal':
+      return {
+        x: supposePosition.x,
+        y: windowOriginPosition.y
+      };
+
+    case 'vertical':
+      return {
+        x: windowOriginPosition.x,
+        y: supposePosition.y
+      };
+
+    case true:
+    default:
+      return supposePosition;
+  }
+}
+
 function handleStartEventForMove(event) {
   function _handleEndEventForMove(event) {
+    /* 提供拖拽移动结束的钩子 */
+    moveEndCallback();
+    nowInMoving = false;
     document.removeEventListener(common_moveEvent, _handleMoveEventForMove, false); // 拖拽结束，清除移动的事件回调
 
     event.preventDefault();
@@ -3258,10 +3294,8 @@ function handleStartEventForMove(event) {
 
     /* 计算位置偏移值 */
 
-    var positionOffset = {
-      x: position.x - startPoint.x + originPositionOffset.x,
-      y: position.y - startPoint.y + originPositionOffset.y
-    };
+    var positionOffset = _calWindowCurrentPosition(startPoint, position, originPositionOffset, movableParam);
+
     window.style.top = positionOffset.y + 'px'; // 设置纵坐标，即top
 
     window.style.left = positionOffset.x + 'px'; // 设置横坐标，left
@@ -3279,12 +3313,25 @@ function handleStartEventForMove(event) {
       y2: startPoint.y
     }) > constant.AVAILABLE_CLICK_MAX_MOVE_DISTANCE && window.className.indexOf('moving') === -1) {
       window.className += ' moving';
+      /* 提供拖拽移动相关的钩子 */
+
+      if (!nowInMoving) {
+        moveStartCallback();
+        nowInMoving = true; // 保证在一次完整的拖拽移动过程中只触发一次moveStartCallback
+      }
+
+      movingCallback();
     }
   }
 
   var window = this.window;
   var startPoint = getClientPosition(event); // 记录本次拖拽的起点位置
 
+  var movableParam = this.params.movable;
+  var moveStartCallback = this.params.moveStartCallback;
+  var movingCallback = this.params.movingCallback;
+  var moveEndCallback = this.params.moveEndCallback;
+  var nowInMoving = false;
   /* 当窗口本体作为MoveHandler且启用resize特性时，需要判断拖拽的位置是否与resize重复 */
 
   if (this.params.resizable && this.isMoveHandlerEqualWindow && judgeResizeType(startPoint, window) !== 'middle') {
@@ -3432,14 +3479,27 @@ var RULES = {
     type: 'string'
   },
   movable: {
-    type: 'boolean',
+    type: 'boolean|string',
     required: false
   },
   resizable: {
+    type: 'boolean|string',
     required: false
   },
   maximizeCallback: {
     type: 'function'
+  },
+  moveStartCallback: {
+    type: 'function',
+    required: false
+  },
+  movingCallback: {
+    type: 'function',
+    required: false
+  },
+  moveEndCallback: {
+    type: 'function',
+    required: false
   }
 };
 function validate() {
@@ -3480,7 +3540,13 @@ function validate() {
   // 自定义的拖拽移动handler，可接受选择器形式的参数，或是Element；为空则以窗口自身为handler
   customMaximizeHandler: null,
   // 自定义的最大化handler，可接受选择器形式的参数，或是Element；为空则不开启最大化的功能
-  maximizeCallback: null // 最大化后的回调函数
+  maximizeCallback: function maximizeCallback() {},
+  // 最大化后的回调函数
+  moveStartCallback: function moveStartCallback() {},
+  // 拖拽移动开始的回调函数
+  movingCallback: function movingCallback() {},
+  // 拖拽移动过程中的回调函数，在每次拖拽过程中会被执行多次
+  moveEndCallback: function moveEndCallback() {} // 拖拽移动结束的回调函数
 
 });
 // CONCATENATED MODULE: ./src/libs/event-binding.js
